@@ -5,7 +5,6 @@
 <title>Poster CLB</title>
 
 <style>
-/* ===== BODY ===== */
 body {
     font-family: Arial, sans-serif;
     background: #f1f2f6;
@@ -14,12 +13,10 @@ body {
     padding: 0;
 }
 
-/* ===== TIÊU ĐỀ ===== */
 h1 {
     margin-top: 30px;
 }
 
-/* ===== CONTAINER POSTER ===== */
 .container {
     display: flex;
     justify-content: center;
@@ -28,14 +25,13 @@ h1 {
     margin: 40px 10px;
 }
 
-/* ===== POSTER ===== */
 .poster {
     background: white;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px gray;
-    width: 90%;        /* default điện thoại */
-    max-width: 250px;  /* desktop */
+    width: 90%;
+    max-width: 250px;
     box-sizing: border-box;
 }
 
@@ -45,7 +41,6 @@ h1 {
     border-radius: 10px;
 }
 
-/* ===== NÚT ===== */
 button {
     padding: 12px 15px;
     margin: 5px;
@@ -53,10 +48,9 @@ button {
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    width: 120px; /* default desktop */
+    width: 120px;
 }
 
-/* nút màu */
 .btn-info {
     background: gray;
     color: white;
@@ -67,7 +61,6 @@ button {
     color: white;
 }
 
-/* ===== MEDIA QUERY MOBILE ===== */
 @media (max-width: 600px) {
     .container {
         flex-direction: column;
@@ -82,15 +75,32 @@ button {
     }
 
     button {
-        width: 100%; /* nút chiếm hết poster */
+        width: 100%;
         margin: 5px 0;
     }
 }
 
-/* ===== THỐNG KÊ ===== */
+/* Thống kê số lượng */
 .thongke {
     margin-top: 20px;
     font-size: 18px;
+}
+
+/* Thanh tiến độ */
+.progress-bar-container {
+    width: 100%;
+    background: #e0e0e0;
+    height: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #4CAF50;
+    border-radius: 8px;
+    transition: width 0.5s;
 }
 </style>
 </head>
@@ -98,7 +108,7 @@ button {
 <body>
 <h1>HỆ THỐNG POSTER CLB</h1>
 
-<!-- THỐNG KÊ SỐ LƯỢNG ĐĂNG KÝ -->
+<!-- Thống kê số lượng -->
 <div class="thongke">
     <p>Công Nghệ: <span id="thongkeCongNghe">0</span> người</p>
     <p>Kinh Doanh: <span id="thongkeKinhDoanh">0</span> người</p>
@@ -113,6 +123,9 @@ button {
     <h3>CLB Công Nghệ</h3>
     <button class="btn-info" onclick="gioiThieu('congnghe')">Xem giới thiệu</button>
     <button class="btn-register" onclick="chonCLB('congnghe')">Đăng ký</button>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressCongNghe"></div>
+    </div>
 </div>
 
 <!-- CLB Kinh Doanh -->
@@ -121,6 +134,9 @@ button {
     <h3>CLB Kinh Doanh</h3>
     <button class="btn-info" onclick="gioiThieu('kinhdoanh')">Xem giới thiệu</button>
     <button class="btn-register" onclick="chonCLB('kinhdoanh')">Đăng ký</button>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressKinhDoanh"></div>
+    </div>
 </div>
 
 <!-- CLB Âm Nhạc -->
@@ -129,25 +145,38 @@ button {
     <h3>CLB Âm Nhạc</h3>
     <button class="btn-info" onclick="gioiThieu('amnhac')">Xem giới thiệu</button>
     <button class="btn-register" onclick="chonCLB('amnhac')">Đăng ký</button>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressAmNhac"></div>
+    </div>
 </div>
 
 </div>
 
 <script>
-// ===== NÚT ĐĂNG KÝ =====
+// Nút Đăng ký với confirm
 function chonCLB(clb) {
-    if (clb === "congnghe") {
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";
+    let clbName = "";
+    let url = "";
+    
+    if(clb === "congnghe") {
+        clbName = "Công Nghệ";
+        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";
     }
-    if (clb === "kinhdoanh") {
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
+    if(clb === "kinhdoanh") {
+        clbName = "Kinh Doanh";
+        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
     }
-    if (clb === "amnhac") {
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";
+    if(clb === "amnhac") {
+        clbName = "Âm Nhạc";
+        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";
+    }
+
+    if(confirm(`Bạn sắp đăng ký CLB ${clbName}. Tiếp tục?`)) {
+        window.location.href = url;
     }
 }
 
-// ===== NÚT GIỚI THIỆU =====
+// Nút Xem giới thiệu
 function gioiThieu(clb) {
     if (clb === "congnghe") {
         alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
@@ -160,29 +189,39 @@ function gioiThieu(clb) {
     }
 }
 
-// ===== HIỂN THỊ SỐ LƯỢNG ĐĂNG KÝ =====
-// Lấy dữ liệu từ Google Sheet đã publish ra CSV
+// Lấy dữ liệu số lượng và cập nhật thanh tiến độ
 async function laySoLuongCLB() {
-    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // dán link publish CSV Google Sheet
+    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link publish CSV của bạn
+    const maxCongNghe = 50;
+    const maxKinhDoanh = 40;
+    const maxAmNhac = 30;
+
     try {
         const res = await fetch(url);
         const data = await res.text();
-        const rows = data.split("\n").slice(1); // bỏ header
+        const rows = data.split("\n").slice(1);
         const counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
         rows.forEach(r => {
             const cols = r.split(",");
             const clb = cols[4]; // cột E là CLB
             if(counts[clb] !== undefined) counts[clb]++;
         });
+
+        // Cập nhật số lượng
         document.getElementById("thongkeCongNghe").innerText = counts["Công Nghệ"];
         document.getElementById("thongkeKinhDoanh").innerText = counts["Kinh Doanh"];
         document.getElementById("thongkeAmNhac").innerText = counts["Âm Nhạc"];
+
+        // Cập nhật thanh tiến độ %
+        document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
+        document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxKinhDoanh*100) + "%";
+        document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxAmNhac*100) + "%";
+
     } catch(e) {
         console.log("Không thể lấy dữ liệu thống kê:", e);
     }
 }
 
-// Chạy khi load trang
 laySoLuongCLB();
 </script>
 
