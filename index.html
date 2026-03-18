@@ -63,7 +63,7 @@ button {
     <img src="https://picsum.photos/300?1">
     <h3>CLB Công Nghệ</h3>
     <button class="btn-info" onclick="gioiThieu('congnghe')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB()">Đăng ký</button>
+    <button class="btn-register" onclick="chonCLB('congnghe')">Đăng ký</button>
 </div>
 
 <!-- CLB Kinh Doanh -->
@@ -71,7 +71,7 @@ button {
     <img src="https://picsum.photos/300?2">
     <h3>CLB Kinh Doanh</h3>
     <button class="btn-info" onclick="gioiThieu('kinhdoanh')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB()">Đăng ký</button>
+    <button class="btn-register" onclick="chonCLB('kinhdoanh')">Đăng ký</button>
 </div>
 
 <!-- CLB Âm Nhạc -->
@@ -79,16 +79,27 @@ button {
     <img src="https://picsum.photos/300?3">
     <h3>CLB Âm Nhạc</h3>
     <button class="btn-info" onclick="gioiThieu('amnhac')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB()">Đăng ký</button>
+    <button class="btn-register" onclick="chonCLB('amnhac')">Đăng ký</button>
 </div>
 
 </div>
 
 <script>
 
-// ===== NÚT ĐĂNG KÝ (SỬA CHUẨN) =====
-function chonCLB() {
-    window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform";
+// ===== NÚT ĐĂNG KÝ: AUTO CHỌN CLB =====
+function chonCLB(clb) {
+
+    if (clb === "congnghe") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=C%C3%B4ng+ngh%E1%BB%87";
+    }
+
+    if (clb === "kinhdoanh") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
+    }
+
+    if (clb === "amnhac") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=%C3%82m+nh%E1%BA%A1c";
+    }
 }
 
 // ===== NÚT GIỚI THIỆU =====
