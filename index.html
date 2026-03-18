@@ -86,11 +86,24 @@ button {
         margin: 5px 0;
     }
 }
+
+/* ===== THỐNG KÊ ===== */
+.thongke {
+    margin-top: 20px;
+    font-size: 18px;
+}
 </style>
 </head>
 
 <body>
 <h1>HỆ THỐNG POSTER CLB</h1>
+
+<!-- THỐNG KÊ SỐ LƯỢNG ĐĂNG KÝ -->
+<div class="thongke">
+    <p>Công Nghệ: <span id="thongkeCongNghe">0</span> người</p>
+    <p>Kinh Doanh: <span id="thongkeKinhDoanh">0</span> người</p>
+    <p>Âm Nhạc: <span id="thongkeAmNhac">0</span> người</p>
+</div>
 
 <div class="container">
 
@@ -146,6 +159,31 @@ function gioiThieu(clb) {
         alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
     }
 }
+
+// ===== HIỂN THỊ SỐ LƯỢNG ĐĂNG KÝ =====
+// Lấy dữ liệu từ Google Sheet đã publish ra CSV
+async function laySoLuongCLB() {
+    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // dán link publish CSV Google Sheet
+    try {
+        const res = await fetch(url);
+        const data = await res.text();
+        const rows = data.split("\n").slice(1); // bỏ header
+        const counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+        rows.forEach(r => {
+            const cols = r.split(",");
+            const clb = cols[4]; // cột E là CLB
+            if(counts[clb] !== undefined) counts[clb]++;
+        });
+        document.getElementById("thongkeCongNghe").innerText = counts["Công Nghệ"];
+        document.getElementById("thongkeKinhDoanh").innerText = counts["Kinh Doanh"];
+        document.getElementById("thongkeAmNhac").innerText = counts["Âm Nhạc"];
+    } catch(e) {
+        console.log("Không thể lấy dữ liệu thống kê:", e);
+    }
+}
+
+// Chạy khi load trang
+laySoLuongCLB();
 </script>
 
 </body>
