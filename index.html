@@ -36,38 +36,7 @@ button {
     color: white;
     border: none;
     border-radius: 5px;
-    margin: 5px;
     cursor: pointer;
-}
-
-button:hover {
-    background: darkblue;
-}
-
-/* ===== POPUP ===== */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background: white;
-    width: 300px;
-    margin: 100px auto;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: left;
-}
-
-.close {
-    float: right;
-    cursor: pointer;
-    color: red;
 }
 </style>
 </head>
@@ -76,79 +45,42 @@ button:hover {
 
 <h1>HỆ THỐNG POSTER CLB</h1>
 
-<button onclick="window.location.href='admin.html'" style="background:black">
-👉 Vào trang Admin
-</button>
-
 <div class="container">
 
-<!-- CLB 1 -->
 <div class="poster">
     <img src="https://picsum.photos/300?1">
     <h3>CLB Công Nghệ</h3>
-    <button onclick="showClub('tech')">Xem giới thiệu</button>
-    <button onclick="chonCLB('Công Nghệ')">Đăng ký</button>
+    <button onclick="chonCLB('congnghe')">Đăng ký</button>
 </div>
 
-<!-- CLB 2 -->
 <div class="poster">
     <img src="https://picsum.photos/300?2">
     <h3>CLB Kinh Doanh</h3>
-    <button onclick="showClub('business')">Xem giới thiệu</button>
-    <button onclick="chonCLB('Kinh Doanh')">Đăng ký</button>
+    <button onclick="chonCLB('kinhdoanh')">Đăng ký</button>
 </div>
 
-<!-- CLB 3 -->
 <div class="poster">
     <img src="https://picsum.photos/300?3">
     <h3>CLB Âm Nhạc</h3>
-    <button onclick="showClub('music')">Xem giới thiệu</button>
-    <button onclick="chonCLB('Âm Nhạc')">Đăng ký</button>
+    <button onclick="chonCLB('amnhac')">Đăng ký</button>
 </div>
 
-</div>
-
-<!-- ===== POPUP ===== -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">X</span>
-        <h2 id="clubName"></h2>
-        <p id="clubDesc"></p>
-    </div>
 </div>
 
 <script>
-function chonCLB(ten) {
-    localStorage.setItem("clb", ten);
-    window.location.href = "register.html";
-}
+function chonCLB(clb) {
 
-/* ===== HIỆN GIỚI THIỆU ===== */
-function showClub(club) {
-    let name = document.getElementById("clubName");
-    let desc = document.getElementById("clubDesc");
-
-    if (club === "tech") {
-        name.innerText = "CLB Công Nghệ";
-        desc.innerText = "CLB dành cho các bạn yêu thích lập trình, thiết kế website và phát triển phần mềm.";
+    if (clb === "congnghe") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.15055547=test&entry.450178437=0123456789&entry.1158255963=123456&entry.1257756082=C%C3%B4ng+ngh%E1%BB%87";
     }
 
-    if (club === "business") {
-        name.innerText = "CLB Kinh Doanh";
-        desc.innerText = "CLB giúp bạn học về marketing, bán hàng và phát triển kỹ năng kinh doanh.";
+    if (clb === "kinhdoanh") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.15055547=test&entry.450178437=0123456789&entry.1158255963=123456&entry.1257756082=Kinh+doanh";
     }
 
-    if (club === "music") {
-        name.innerText = "CLB Âm Nhạc";
-        desc.innerText = "CLB dành cho các bạn đam mê ca hát, chơi nhạc cụ và biểu diễn.";
+    if (clb === "amnhac") {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.15055547=test&entry.450178437=0123456789&entry.1158255963=123456&entry.1257756082=%C3%82m+nh%E1%BA%A1c";
     }
-
-    document.getElementById("modal").style.display = "block";
-}
-
-/* ===== ĐÓNG POPUP ===== */
-function closeModal() {
-    document.getElementById("modal").style.display = "none";
 }
 </script>
 
