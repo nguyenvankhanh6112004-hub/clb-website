@@ -96,12 +96,39 @@ button {
     border-radius: 8px;
     transition: width 0.5s;
 }
+
+/* Splash logo full màn hình */
+#splash-logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+#splash-logo img {
+    max-width: 45%;
+    max-height: 45%;
+    object-fit: contain;
+}
 </style>
 </head>
 
 <body>
+
+<!-- Splash Logo -->
+<div id="splash-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/vi/f/fc/Logo_Sao_Do.png" alt="Logo Đại học Sao Đỏ">
+</div>
+
 <h1>HỆ THỐNG POSTER CLB</h1>
 
+<div id="app-content">
 <div class="container">
 
 <!-- CLB Công Nghệ -->
@@ -138,8 +165,25 @@ button {
 </div>
 
 </div>
+</div>
 
 <script>
+// Hiển thị splash logo 3 giây rồi mới hiện app-content
+function afterQRScanned() {
+    const splash = document.getElementById('splash-logo');
+    const main = document.getElementById('app-content');
+
+    main.style.display = 'none'; // Ẩn nội dung chính lúc đầu
+
+    setTimeout(() => {
+        splash.style.display = 'none'; // Ẩn logo
+        main.style.display = 'block'; // Hiện nội dung cũ
+    }, 3000); // 3000ms = 3 giây
+}
+
+// Gọi khi load trang (hoặc sau quét QR thực sự)
+window.addEventListener('load', afterQRScanned);
+
 // Nút Đăng ký với confirm
 function chonCLB(clb) {
     let clbName = "";
@@ -176,7 +220,7 @@ function gioiThieu(clb) {
     }
 }
 
-// Cập nhật thanh tiến độ (giữ lại chức năng, nhưng không hiển thị số người)
+// Cập nhật thanh tiến độ
 async function laySoLuongCLB() {
     const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link CSV publish
     const maxCongNghe = 50;
@@ -194,7 +238,6 @@ async function laySoLuongCLB() {
             if(counts[clb] !== undefined) counts[clb]++;
         });
 
-        // Cập nhật thanh tiến độ %
         document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
         document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxKinhDoanh*100) + "%";
         document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxAmNhac*100) + "%";
