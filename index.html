@@ -80,12 +80,6 @@ button {
     }
 }
 
-/* Thống kê số lượng */
-.thongke {
-    margin-top: 20px;
-    font-size: 18px;
-}
-
 /* Thanh tiến độ */
 .progress-bar-container {
     width: 100%;
@@ -107,13 +101,6 @@ button {
 
 <body>
 <h1>HỆ THỐNG POSTER CLB</h1>
-
-<!-- Thống kê số lượng -->
-<div class="thongke">
-    <p>Công Nghệ: <span id="thongkeCongNghe">0</span> người</p>
-    <p>Kinh Doanh: <span id="thongkeKinhDoanh">0</span> người</p>
-    <p>Âm Nhạc: <span id="thongkeAmNhac">0</span> người</p>
-</div>
 
 <div class="container">
 
@@ -189,9 +176,9 @@ function gioiThieu(clb) {
     }
 }
 
-// Lấy dữ liệu số lượng và cập nhật thanh tiến độ
+// Cập nhật thanh tiến độ (giữ lại chức năng, nhưng không hiển thị số người)
 async function laySoLuongCLB() {
-    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link publish CSV của bạn
+    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link CSV publish
     const maxCongNghe = 50;
     const maxKinhDoanh = 40;
     const maxAmNhac = 30;
@@ -206,11 +193,6 @@ async function laySoLuongCLB() {
             const clb = cols[4]; // cột E là CLB
             if(counts[clb] !== undefined) counts[clb]++;
         });
-
-        // Cập nhật số lượng
-        document.getElementById("thongkeCongNghe").innerText = counts["Công Nghệ"];
-        document.getElementById("thongkeKinhDoanh").innerText = counts["Kinh Doanh"];
-        document.getElementById("thongkeAmNhac").innerText = counts["Âm Nhạc"];
 
         // Cập nhật thanh tiến độ %
         document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
