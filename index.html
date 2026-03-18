@@ -1,65 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Poster CLB - Landing Page</title>
+<title>Poster CLB</title>
 
 <style>
+/* ===== BODY ===== */
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: #f1f2f6;
     text-align: center;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
 }
 
+/* ===== TIÊU ĐỀ ===== */
 h1 {
-    margin-bottom: 20px;
+    margin-top: 30px;
 }
 
+/* ===== CONTAINER POSTER ===== */
 .container {
     display: flex;
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
+    margin: 40px 10px;
 }
 
+/* ===== POSTER ===== */
 .poster {
-    width: 220px;
     background: white;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px gray;
+    width: 90%;        /* default điện thoại */
+    max-width: 250px;  /* desktop */
+    box-sizing: border-box;
 }
 
 .poster img {
     width: 100%;
+    height: auto;
     border-radius: 10px;
 }
 
+/* ===== NÚT ===== */
 button {
-    padding: 8px 12px;
-    margin: 5px 0;
+    padding: 12px 15px;
+    margin: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    width: 100%;
+    font-size: 16px;
+    width: 120px; /* default desktop */
 }
 
+/* nút màu */
 .btn-info {
     background: gray;
     color: white;
 }
 
 .btn-register {
-    background: #007bff;
+    background: blue;
     color: white;
+}
+
+/* ===== MEDIA QUERY MOBILE ===== */
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .poster {
+        width: 95%;
+        max-width: none;
+    }
+
+    button {
+        width: 100%; /* nút chiếm hết poster */
+        margin: 5px 0;
+    }
 }
 </style>
 </head>
-<body>
 
+<body>
 <h1>HỆ THỐNG POSTER CLB</h1>
-<p>Chọn CLB bạn muốn xem và đăng ký:</p>
 
 <div class="container">
 
@@ -90,29 +121,29 @@ button {
 </div>
 
 <script>
-// ===== NÚT ĐĂNG KÝ: AUTO CHỌN CLB =====
+// ===== NÚT ĐĂNG KÝ =====
 function chonCLB(clb) {
     if (clb === "congnghe") {
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=C%C3%B4ng+ngh%E1%BB%87";
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";
     }
     if (clb === "kinhdoanh") {
         window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
     }
     if (clb === "amnhac") {
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=%C3%82m+nh%E1%BA%A1c";
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";
     }
 }
 
 // ===== NÚT GIỚI THIỆU =====
 function gioiThieu(clb) {
     if (clb === "congnghe") {
-        alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế");
+        alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
     }
     if (clb === "kinhdoanh") {
-        alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp");
+        alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
     }
     if (clb === "amnhac") {
-        alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn");
+        alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
     }
 }
 </script>
