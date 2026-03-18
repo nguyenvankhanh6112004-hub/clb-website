@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body>
+
+<h2>Admin - Quản lý sinh viên</h2>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <input type="text" id="user" placeholder="Tài khoản"><br><br>
+  <input type="password" id="pass" placeholder="Mật khẩu"><br><br>
+  <button onclick="login()">Đăng nhập</button>
+</div>
+
+<!-- ADMIN -->
+<div id="adminPanel" style="display:none">
+  <input type="text" id="search" placeholder="Tìm tên / MSSV / SĐT / lớp">
+  <button onclick="loadData()">Tìm</button>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>MSSV</th>
+        <th>Lớp</th>
+        <th>SĐT</th>
+      </tr>
+    </thead>
+    <tbody id="data"></tbody>
+  </table>
+</div>
+
+<script type="module">
+// ================= FIREBASE =================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCjfMMxd9mP1tlswUQJ_ZhOGpwYDjtp4dI",
+  authDomain: "clb-system.firebaseapp.com",
+  projectId: "clb-system",
+  storageBucket: "clb-system.firebasestorage.app",
+  messagingSenderId: "605215311578",
+  appId: "1:605215311578:web:b086ee29b939568b9487e3",
+  measurementId: "G-N91QHT6EG1"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ================= LOGIN =================
+window.login = function() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  if (u === "admin" && p === "123456") {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    loadData();
+  } else {
+    alert("Sai tài khoản!");
+  }
+};
+
+// ================= LOAD DATA =================
+window.loadData = async function() {
+  const keyword = document.getElementById("search").value.toLowerCase();
+  const snapshot = await getDocs(collection(db, "students"));
+
+  let html = "";
+
+  snapshot.forEach(doc => {
+    const d = doc.data();
+
+    if (
+      d.name.toLowerCase().includes(keyword) ||
+      d.studentId.includes(keyword) ||
+      d.phone.includes(keyword) ||
+      d.class.toLowerCase().includes(keyword)
+    ) {
+      html += `
+        <tr>
+          <td>${d.name}</td>
+          <td>${d.studentId}</td>
+          <td>${d.class}</td>
+          <td>${d.phone}</td>
+        </tr>
+      `;
+    }
+  });
+
+  document.getElementById("data").innerHTML = html;
+};
+</script>
+
+</body>
+</html>
