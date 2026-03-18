@@ -222,7 +222,11 @@ async function laySoLuongCLB() {
     }
 }
 
+// Chạy lần đầu
 laySoLuongCLB();
+
+// Cập nhật lại mỗi 5 giây
+setInterval(laySoLuongCLB, 5000);
 </script>
 
 </body>
