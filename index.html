@@ -16,6 +16,7 @@ body {
     justify-content: center;
     gap: 20px;
     margin-top: 40px;
+    flex-wrap: wrap;
 }
 
 .poster {
@@ -28,15 +29,25 @@ body {
 
 .poster img {
     width: 100%;
+    border-radius: 10px;
 }
 
 button {
-    padding: 8px 15px;
-    background: blue;
-    color: white;
+    padding: 8px 12px;
+    margin: 5px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.btn-info {
+    background: gray;
+    color: white;
+}
+
+.btn-register {
+    background: blue;
+    color: white;
 }
 </style>
 </head>
@@ -47,27 +58,35 @@ button {
 
 <div class="container">
 
+<!-- CLB Công Nghệ -->
 <div class="poster">
     <img src="https://picsum.photos/300?1">
     <h3>CLB Công Nghệ</h3>
-    <button onclick="chonCLB('congnghe')">Đăng ký</button>
+    <button class="btn-info" onclick="gioiThieu('congnghe')">Xem giới thiệu</button>
+    <button class="btn-register" onclick="chonCLB('congnghe')">Đăng ký</button>
 </div>
 
+<!-- CLB Kinh Doanh -->
 <div class="poster">
     <img src="https://picsum.photos/300?2">
     <h3>CLB Kinh Doanh</h3>
-    <button onclick="chonCLB('kinhdoanh')">Đăng ký</button>
+    <button class="btn-info" onclick="gioiThieu('kinhdoanh')">Xem giới thiệu</button>
+    <button class="btn-register" onclick="chonCLB('kinhdoanh')">Đăng ký</button>
 </div>
 
+<!-- CLB Âm Nhạc -->
 <div class="poster">
     <img src="https://picsum.photos/300?3">
     <h3>CLB Âm Nhạc</h3>
-    <button onclick="chonCLB('amnhac')">Đăng ký</button>
+    <button class="btn-info" onclick="gioiThieu('amnhac')">Xem giới thiệu</button>
+    <button class="btn-register" onclick="chonCLB('amnhac')">Đăng ký</button>
 </div>
 
 </div>
 
 <script>
+
+// ===== NÚT ĐĂNG KÝ =====
 function chonCLB(clb) {
 
     if (clb === "congnghe") {
@@ -82,6 +101,23 @@ function chonCLB(clb) {
         window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.15055547=test&entry.450178437=0123456789&entry.1158255963=123456&entry.1257756082=%C3%82m+nh%E1%BA%A1c";
     }
 }
+
+// ===== NÚT GIỚI THIỆU =====
+function gioiThieu(clb) {
+
+    if (clb === "congnghe") {
+        alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế");
+    }
+
+    if (clb === "kinhdoanh") {
+        alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp");
+    }
+
+    if (clb === "amnhac") {
+        alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn");
+    }
+}
+
 </script>
 
 </body>
