@@ -1,3 +1,4 @@
+viết hẳn code cho tôi đi code cũ đây đừng xóa gì cả nhé 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -13,34 +14,6 @@ body {
     padding: 0;
 }
 
-/* Splash Logo full màn hình với fade */
-#splash-logo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.8s ease;
-}
-
-#splash-logo img {
-    max-width: 50%;
-    max-height: 50%;
-    object-fit: contain;
-}
-
-/* Ẩn nội dung chính lúc đầu */
-#app-content {
-    display: none;
-}
-
-/* Style cũ của bạn */
 h1 {
     margin-top: 30px;
 }
@@ -128,15 +101,8 @@ button {
 </head>
 
 <body>
-
-<!-- Splash Logo -->
-<div id="splash-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/vi/0/0a/Logo_dhsaodo_moi.PNG" alt="Logo Đại học Sao Đỏ">
-</div>
-
 <h1>HỆ THỐNG POSTER CLB</h1>
 
-<div id="app-content">
 <div class="container">
 
 <!-- CLB Công Nghệ -->
@@ -173,27 +139,8 @@ button {
 </div>
 
 </div>
-</div>
 
 <script>
-// Hiển thị splash logo 3 giây với fade
-function afterQRScanned() {
-    const splash = document.getElementById('splash-logo');
-    const main = document.getElementById('app-content');
-
-    main.style.display = 'none'; // Ẩn nội dung chính lúc đầu
-
-    setTimeout(() => {
-        splash.style.opacity = 0; // Fade out
-        setTimeout(() => {
-            splash.style.display = 'none';
-            main.style.display = 'block'; // Hiện nội dung chính
-        }, 800); // khớp thời gian fade
-    }, 3000); // hiển thị 3 giây
-}
-
-window.addEventListener('load', afterQRScanned);
-
 // Nút Đăng ký với confirm
 function chonCLB(clb) {
     let clbName = "";
@@ -230,7 +177,7 @@ function gioiThieu(clb) {
     }
 }
 
-// Cập nhật thanh tiến độ
+// Cập nhật thanh tiến độ (giữ lại chức năng, nhưng không hiển thị số người)
 async function laySoLuongCLB() {
     const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link CSV publish
     const maxCongNghe = 50;
@@ -248,6 +195,7 @@ async function laySoLuongCLB() {
             if(counts[clb] !== undefined) counts[clb]++;
         });
 
+        // Cập nhật thanh tiến độ %
         document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
         document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxKinhDoanh*100) + "%";
         document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxAmNhac*100) + "%";
