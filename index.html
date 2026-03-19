@@ -188,7 +188,7 @@ function gioiThieu(clb) {
 
 // Cập nhật thanh tiến độ và số lượng thành viên
 async function laySoLuongCLB() {
-    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link CSV publish
+    const url = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=389125926";
     const maxCongNghe = 50;
     const maxKinhDoanh = 40;
     const maxAmNhac = 30;
@@ -200,8 +200,12 @@ async function laySoLuongCLB() {
         const counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
         rows.forEach(r => {
             const cols = r.split(",");
-            const clb = cols[4]; // cột E là CLB
-            if(counts[clb] !== undefined) counts[clb]++;
+            const clb = cols[4]?.trim(); // cột E là CLB
+            if(clb) {
+                if(clb.includes("Công")) counts["Công Nghệ"]++;
+                else if(clb.includes("Kinh")) counts["Kinh Doanh"]++;
+                else if(clb.includes("Âm")) counts["Âm Nhạc"]++;
+            }
         });
 
         // Cập nhật thanh tiến độ %
