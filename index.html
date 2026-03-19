@@ -107,7 +107,7 @@ button {
 
 <script>
 // ==== CẬP NHẬT LINK CSV GOOGLE SHEET CỦA BẠN ====
-// Link CSV đã publish từ Google Sheet
+// Link CSV xuất bản từ Google Sheet (gid = 1881348908)
 const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=1881348908";
 
 // Max số lượng từng CLB
@@ -154,7 +154,7 @@ async function capNhatSoLuongTuSheet(){
         let temp = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
         rows.forEach(r=>{
             const cols = r.split(",");
-            const clb = cols[3]?.trim(); // Cột chứa tên CLB (đã tự xác định đúng)
+            const clb = cols[2]?.trim(); // Cột C trong CSV
             if(clb){
                 if(clb.includes("Công")) temp["Công Nghệ"]++;
                 else if(clb.includes("Kinh")) temp["Kinh Doanh"]++;
