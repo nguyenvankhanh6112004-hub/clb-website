@@ -69,6 +69,7 @@ button {
 <body>
 <h1>HỆ THỐNG POSTER CLB</h1>
 <div class="container">
+
 <div class="poster">
     <img src="https://picsum.photos/300?1" alt="Công Nghệ">
     <h3>CLB Công Nghệ</h3>
@@ -79,6 +80,7 @@ button {
     </div>
     <p class="member-count">Số thành viên đã đăng ký: <span id="countCongNghe">0</span></p>
 </div>
+
 <div class="poster">
     <img src="https://picsum.photos/300?2" alt="Kinh Doanh">
     <h3>CLB Kinh Doanh</h3>
@@ -89,6 +91,7 @@ button {
     </div>
     <p class="member-count">Số thành viên đã đăng ký: <span id="countKinhDoanh">0</span></p>
 </div>
+
 <div class="poster">
     <img src="https://picsum.photos/300?3" alt="Âm Nhạc">
     <h3>CLB Âm Nhạc</h3>
@@ -99,68 +102,72 @@ button {
     </div>
     <p class="member-count">Số thành viên đã đăng ký: <span id="countAmNhac">0</span></p>
 </div>
+
 </div>
 
 <script>
-// Link CSV từ Google Sheet công khai
-const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=389125926";
+// Link CSV từ Google Sheet đã công khai
+const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=1881348908";
 
-let soLuongLocal = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+// Biến chứa số lượng hiện tại
+let soLuongCLB = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
 const maxCLB = { "Công Nghệ":50, "Kinh Doanh":40, "Âm Nhạc":30 };
 
-// Nút đăng ký
+// Hàm mở Google Form
 function dangKy(clb){
-    let tenCLB="", formURL="";
-    if(clb==="congnghe"){tenCLB="Công Nghệ"; formURL="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";}
-    if(clb==="kinhdoanh"){tenCLB="Kinh Doanh"; formURL="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";}
-    if(clb==="amnhac"){tenCLB="Âm Nhạc"; formURL="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";}
-
-    if(confirm(`Bạn sắp đăng ký CLB ${tenCLB}. Tiếp tục?`)){
-        window.open(formURL,"_blank");
+    let ten="", url="";
+    if(clb==="congnghe"){ ten="Công Nghệ"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ"; }
+    if(clb==="kinhdoanh"){ ten="Kinh Doanh"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh"; }
+    if(clb==="amnhac"){ ten="Âm Nhạc"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc"; }
+    if(confirm(`Bạn sắp đăng ký CLB ${ten}. Tiếp tục?`)){
+        window.open(url,"_blank");
     }
 }
 
-// Nút xem giới thiệu
+// Hàm xem giới thiệu
 function xemGioiThieu(clb){
-    if(clb==="congnghe") alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
-    if(clb==="kinhdoanh") alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
-    if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
+    if(clb==="congnghe") alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Thời gian: Thứ 3 & Thứ 6\n- Phòng A101");
+    if(clb==="kinhdoanh") alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Phòng B202");
+    if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Phòng C303");
+}
+
+// Cập nhật giao diện
+function capNhatGiaoDien(){
+    document.getElementById("countCongNghe").innerText = soLuongCLB["Công Nghệ"];
+    document.getElementById("countKinhDoanh").innerText = soLuongCLB["Kinh Doanh"];
+    document.getElementById("countAmNhac").innerText = soLuongCLB["Âm Nhạc"];
+
+    document.getElementById("progressCongNghe").style.width = (soLuongCLB["Công Nghệ"]/maxCLB["Công Nghệ"]*100)+"%";
+    document.getElementById("progressKinhDoanh").style.width = (soLuongCLB["Kinh Doanh"]/maxCLB["Kinh Doanh"]*100)+"%";
+    document.getElementById("progressAmNhac").style.width = (soLuongCLB["Âm Nhạc"]/maxCLB["Âm Nhạc"]*100)+"%";
 }
 
 // Lấy dữ liệu CSV và cập nhật số lượng
 async function capNhatSoLuongTuSheet(){
-    try{
+    try {
         const res = await fetch(csvURL);
-        const data = await res.text();
-        const rows = data.split("\n").slice(1);
-        const csvCounts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+        const text = await res.text();
+        const rows = text.split("\n").slice(1);
+        let temp = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
         rows.forEach(r=>{
             const cols = r.split(",");
-            const clb = cols[4]?.trim();
+            const clb = cols[2]?.trim();  // cột CLB trong Sheet
             if(clb){
-                if(clb.includes("Công")) csvCounts["Công Nghệ"]++;
-                else if(clb.includes("Kinh")) csvCounts["Kinh Doanh"]++;
-                else if(clb.includes("Âm")) csvCounts["Âm Nhạc"]++;
+                if(clb.includes("Công")) temp["Công Nghệ"]++;
+                else if(clb.includes("Kinh")) temp["Kinh Doanh"]++;
+                else if(clb.includes("Âm")) temp["Âm Nhạc"]++;
             }
         });
-        soLuongLocal = csvCounts;
+        soLuongCLB = temp;
         capNhatGiaoDien();
-    }catch(e){ console.log("Lỗi khi lấy CSV:", e); }
+    } catch(e){
+        console.error("Lỗi lấy dữ liệu CSV:", e);
+    }
 }
 
-function capNhatGiaoDien(){
-    document.getElementById("countCongNghe").innerText = soLuongLocal["Công Nghệ"];
-    document.getElementById("countKinhDoanh").innerText = soLuongLocal["Kinh Doanh"];
-    document.getElementById("countAmNhac").innerText = soLuongLocal["Âm Nhạc"];
-
-    document.getElementById("progressCongNghe").style.width = (soLuongLocal["Công Nghệ"]/maxCLB["Công Nghệ"]*100)+"%";
-    document.getElementById("progressKinhDoanh").style.width = (soLuongLocal["Kinh Doanh"]/maxCLB["Kinh Doanh"]*100)+"%";
-    document.getElementById("progressAmNhac").style.width = (soLuongLocal["Âm Nhạc"]/maxCLB["Âm Nhạc"]*100)+"%";
-}
-
-// Chạy lần đầu và tự động cập nhật mỗi 5 giây
+// Mở đầu & cập nhật định kỳ
 capNhatSoLuongTuSheet();
-setInterval(capNhatSoLuongTuSheet,5000);
+setInterval(capNhatSoLuongTuSheet, 5000);
 </script>
 </body>
 </html>
