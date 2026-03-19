@@ -106,14 +106,17 @@ button {
 </div>
 
 <script>
-// Link CSV từ Google Sheet đã công khai
+// ==== CẬP NHẬT LINK CSV GOOGLE SHEET CỦA BẠN ====
+// Link CSV đã publish từ Google Sheet
 const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=1881348908";
 
-// Biến chứa số lượng hiện tại
-let soLuongCLB = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+// Max số lượng từng CLB
 const maxCLB = { "Công Nghệ":50, "Kinh Doanh":40, "Âm Nhạc":30 };
 
-// Hàm mở Google Form
+// Lấy số lượng hiện tại
+let soLuongCLB = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+
+// ==== Hàm mở Form ====
 function dangKy(clb){
     let ten="", url="";
     if(clb==="congnghe"){ ten="Công Nghệ"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ"; }
@@ -124,14 +127,14 @@ function dangKy(clb){
     }
 }
 
-// Hàm xem giới thiệu
+// ==== Xem giới thiệu CLB ====
 function xemGioiThieu(clb){
     if(clb==="congnghe") alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Thời gian: Thứ 3 & Thứ 6\n- Phòng A101");
     if(clb==="kinhdoanh") alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Phòng B202");
     if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Phòng C303");
 }
 
-// Cập nhật giao diện
+// ==== Cập nhật giao diện ====
 function capNhatGiaoDien(){
     document.getElementById("countCongNghe").innerText = soLuongCLB["Công Nghệ"];
     document.getElementById("countKinhDoanh").innerText = soLuongCLB["Kinh Doanh"];
@@ -142,16 +145,16 @@ function capNhatGiaoDien(){
     document.getElementById("progressAmNhac").style.width = (soLuongCLB["Âm Nhạc"]/maxCLB["Âm Nhạc"]*100)+"%";
 }
 
-// Lấy dữ liệu CSV và cập nhật số lượng
+// ==== Lấy dữ liệu từ CSV ====
 async function capNhatSoLuongTuSheet(){
     try {
         const res = await fetch(csvURL);
         const text = await res.text();
-        const rows = text.split("\n").slice(1);
+        const rows = text.split("\n").slice(1); // bỏ header
         let temp = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
         rows.forEach(r=>{
             const cols = r.split(",");
-            const clb = cols[2]?.trim();  // cột CLB trong Sheet
+            const clb = cols[3]?.trim(); // Cột chứa tên CLB (đã tự xác định đúng)
             if(clb){
                 if(clb.includes("Công")) temp["Công Nghệ"]++;
                 else if(clb.includes("Kinh")) temp["Kinh Doanh"]++;
@@ -165,7 +168,7 @@ async function capNhatSoLuongTuSheet(){
     }
 }
 
-// Mở đầu & cập nhật định kỳ
+// Chạy lần đầu và cập nhật định kỳ 5 giây
 capNhatSoLuongTuSheet();
 setInterval(capNhatSoLuongTuSheet, 5000);
 </script>
