@@ -80,7 +80,6 @@ button {
     }
 }
 
-/* Thanh tiến độ */
 .progress-bar-container {
     width: 100%;
     background: #e0e0e0;
@@ -97,7 +96,6 @@ button {
     transition: width 0.5s;
 }
 
-/* Số lượng thành viên */
 .member-count {
     margin-top: 5px;
     font-weight: bold;
@@ -105,13 +103,11 @@ button {
 }
 </style>
 </head>
-
 <body>
 <h1>HỆ THỐNG POSTER CLB</h1>
 
 <div class="container">
 
-<!-- CLB Công Nghệ -->
 <div class="poster">
     <img src="https://picsum.photos/300?1" alt="Công Nghệ">
     <h3>CLB Công Nghệ</h3>
@@ -123,7 +119,6 @@ button {
     <p class="member-count">Số thành viên đã đăng ký: <span id="countCongNghe">0</span></p>
 </div>
 
-<!-- CLB Kinh Doanh -->
 <div class="poster">
     <img src="https://picsum.photos/300?2" alt="Kinh Doanh">
     <h3>CLB Kinh Doanh</h3>
@@ -135,7 +130,6 @@ button {
     <p class="member-count">Số thành viên đã đăng ký: <span id="countKinhDoanh">0</span></p>
 </div>
 
-<!-- CLB Âm Nhạc -->
 <div class="poster">
     <img src="https://picsum.photos/300?3" alt="Âm Nhạc">
     <h3>CLB Âm Nhạc</h3>
@@ -150,85 +144,73 @@ button {
 </div>
 
 <script>
-// Nút Đăng ký với confirm
+let counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+const maxCounts = { "Công Nghệ":50, "Kinh Doanh":40, "Âm Nhạc":30 };
+const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=389125926";
+
+// Nút Đăng ký
 function chonCLB(clb) {
     let clbName = "";
     let url = "";
-    
-    if(clb === "congnghe") {
-        clbName = "Công Nghệ";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";
-    }
-    if(clb === "kinhdoanh") {
-        clbName = "Kinh Doanh";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
-    }
-    if(clb === "amnhac") {
-        clbName = "Âm Nhạc";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";
-    }
+    if(clb === "congnghe") { clbName="Công Nghệ"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ"; }
+    if(clb === "kinhdoanh") { clbName="Kinh Doanh"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh"; }
+    if(clb === "amnhac") { clbName="Âm Nhạc"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc"; }
 
     if(confirm(`Bạn sắp đăng ký CLB ${clbName}. Tiếp tục?`)) {
-        window.location.href = url;
+        // Tăng số lượng ngay khi click
+        counts[clbName]++;
+        capNhatGiaoDien();
+        window.open(url, "_blank"); // mở form trong tab mới
     }
 }
 
-// Nút Xem giới thiệu
+// Xem giới thiệu
 function gioiThieu(clb) {
-    if (clb === "congnghe") {
-        alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
-    }
-    if (clb === "kinhdoanh") {
-        alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
-    }
-    if (clb === "amnhac") {
-        alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
-    }
+    if(clb==="congnghe") alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
+    if(clb==="kinhdoanh") alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
+    if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
 }
 
-// Cập nhật thanh tiến độ và số lượng thành viên
-async function laySoLuongCLB() {
-    const url = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=389125926";
-    const maxCongNghe = 50;
-    const maxKinhDoanh = 40;
-    const maxAmNhac = 30;
+// Cập nhật giao diện
+function capNhatGiaoDien() {
+    document.getElementById("countCongNghe").innerText = counts["Công Nghệ"];
+    document.getElementById("countKinhDoanh").innerText = counts["Kinh Doanh"];
+    document.getElementById("countAmNhac").innerText = counts["Âm Nhạc"];
 
+    document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCounts["Công Nghệ"]*100)+"%";
+    document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxCounts["Kinh Doanh"]*100)+"%";
+    document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxCounts["Âm Nhạc"]*100)+"%";
+}
+
+// Lấy dữ liệu từ CSV để đồng bộ
+async function laySoLuongCLB() {
     try {
-        const res = await fetch(url);
+        const res = await fetch(csvURL);
         const data = await res.text();
         const rows = data.split("\n").slice(1);
-        const counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
-        rows.forEach(r => {
+        const csvCounts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+        rows.forEach(r=>{
             const cols = r.split(",");
-            const clb = cols[4]?.trim(); // cột E là CLB
-            if(clb) {
-                if(clb.includes("Công")) counts["Công Nghệ"]++;
-                else if(clb.includes("Kinh")) counts["Kinh Doanh"]++;
-                else if(clb.includes("Âm")) counts["Âm Nhạc"]++;
+            const clb = cols[4]?.trim();
+            if(clb){
+                if(clb.includes("Công")) csvCounts["Công Nghệ"]++;
+                else if(clb.includes("Kinh")) csvCounts["Kinh Doanh"]++;
+                else if(clb.includes("Âm")) csvCounts["Âm Nhạc"]++;
             }
         });
-
-        // Cập nhật thanh tiến độ %
-        document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
-        document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxKinhDoanh*100) + "%";
-        document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxAmNhac*100) + "%";
-
-        // Cập nhật số lượng thành viên
-        document.getElementById("countCongNghe").innerText = counts["Công Nghệ"];
-        document.getElementById("countKinhDoanh").innerText = counts["Kinh Doanh"];
-        document.getElementById("countAmNhac").innerText = counts["Âm Nhạc"];
-
-    } catch(e) {
-        console.log("Không thể lấy dữ liệu thống kê:", e);
+        // Nếu số lượng CSV lớn hơn số local, đồng bộ
+        for(const k in csvCounts){
+            if(csvCounts[k]>counts[k]) counts[k]=csvCounts[k];
+        }
+        capNhatGiaoDien();
+    } catch(e){
+        console.log("Lỗi lấy dữ liệu CSV:", e);
     }
 }
 
-// Chạy lần đầu
+// Chạy lần đầu và cập nhật mỗi 5 giây
 laySoLuongCLB();
-
-// Cập nhật lại mỗi 5 giây
-setInterval(laySoLuongCLB, 5000);
+setInterval(laySoLuongCLB,5000);
 </script>
-
 </body>
 </html>
