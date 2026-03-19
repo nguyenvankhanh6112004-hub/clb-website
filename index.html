@@ -59,11 +59,6 @@ button {
     border-radius: 8px;
     transition: width 0.5s;
 }
-.member-count {
-    margin-top: 5px;
-    font-weight: bold;
-    color: #007BFF;
-}
 </style>
 </head>
 <body>
@@ -78,7 +73,6 @@ button {
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressCongNghe"></div>
     </div>
-    <p class="member-count">Số thành viên đã đăng ký: <span id="countCongNghe">0</span></p>
 </div>
 
 <div class="poster">
@@ -89,7 +83,6 @@ button {
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressKinhDoanh"></div>
     </div>
-    <p class="member-count">Số thành viên đã đăng ký: <span id="countKinhDoanh">0</span></p>
 </div>
 
 <div class="poster">
@@ -100,22 +93,11 @@ button {
     <div class="progress-bar-container">
         <div class="progress-bar" id="progressAmNhac"></div>
     </div>
-    <p class="member-count">Số thành viên đã đăng ký: <span id="countAmNhac">0</span></p>
 </div>
 
 </div>
 
 <script>
-// ==== CẬP NHẬT LINK CSV GOOGLE SHEET CỦA BẠN ====
-// Link CSV xuất bản từ Google Sheet (gid = 1881348908)
-const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=1881348908";
-
-// Max số lượng từng CLB
-const maxCLB = { "Công Nghệ":50, "Kinh Doanh":40, "Âm Nhạc":30 };
-
-// Lấy số lượng hiện tại
-let soLuongCLB = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
-
 // ==== Hàm mở Form ====
 function dangKy(clb){
     let ten="", url="";
@@ -134,43 +116,11 @@ function xemGioiThieu(clb){
     if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Phòng C303");
 }
 
-// ==== Cập nhật giao diện ====
-function capNhatGiaoDien(){
-    document.getElementById("countCongNghe").innerText = soLuongCLB["Công Nghệ"];
-    document.getElementById("countKinhDoanh").innerText = soLuongCLB["Kinh Doanh"];
-    document.getElementById("countAmNhac").innerText = soLuongCLB["Âm Nhạc"];
-
-    document.getElementById("progressCongNghe").style.width = (soLuongCLB["Công Nghệ"]/maxCLB["Công Nghệ"]*100)+"%";
-    document.getElementById("progressKinhDoanh").style.width = (soLuongCLB["Kinh Doanh"]/maxCLB["Kinh Doanh"]*100)+"%";
-    document.getElementById("progressAmNhac").style.width = (soLuongCLB["Âm Nhạc"]/maxCLB["Âm Nhạc"]*100)+"%";
-}
-
-// ==== Lấy dữ liệu từ CSV ====
-async function capNhatSoLuongTuSheet(){
-    try {
-        const res = await fetch(csvURL);
-        const text = await res.text();
-        const rows = text.split("\n").slice(1); // bỏ header
-        let temp = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
-        rows.forEach(r=>{
-            const cols = r.split(",");
-            const clb = cols[2]?.trim(); // Cột C trong CSV
-            if(clb){
-                if(clb.includes("Công")) temp["Công Nghệ"]++;
-                else if(clb.includes("Kinh")) temp["Kinh Doanh"]++;
-                else if(clb.includes("Âm")) temp["Âm Nhạc"]++;
-            }
-        });
-        soLuongCLB = temp;
-        capNhatGiaoDien();
-    } catch(e){
-        console.error("Lỗi lấy dữ liệu CSV:", e);
-    }
-}
-
-// Chạy lần đầu và cập nhật định kỳ 5 giây
-capNhatSoLuongTuSheet();
-setInterval(capNhatSoLuongTuSheet, 5000);
+// ==== (Không còn lấy dữ liệu CSV nữa) ====
+// Nếu muốn thanh tiến độ vẫn chạy, bạn có thể tự chỉnh width = 0 hoặc giữ cố định
+document.getElementById("progressCongNghe").style.width = "0%";
+document.getElementById("progressKinhDoanh").style.width = "0%";
+document.getElementById("progressAmNhac").style.width = "0%";
 </script>
 </body>
 </html>
