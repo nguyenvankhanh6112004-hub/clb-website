@@ -144,47 +144,45 @@ button {
 </div>
 
 <script>
-let counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
+let localCounts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
 const maxCounts = { "Công Nghệ":50, "Kinh Doanh":40, "Âm Nhạc":30 };
 const csvURL = "https://docs.google.com/spreadsheets/d/1LRlD9ap6HN-p3YeccgTndJJMVg6ZikNum1Vf7-NhkkI/export?format=csv&gid=389125926";
 
 // Nút Đăng ký
 function chonCLB(clb) {
-    let clbName = "";
-    let url = "";
-    if(clb === "congnghe") { clbName="Công Nghệ"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ"; }
-    if(clb === "kinhdoanh") { clbName="Kinh Doanh"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh"; }
-    if(clb === "amnhac") { clbName="Âm Nhạc"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc"; }
+    let clbName="", url="";
+    if(clb==="congnghe"){clbName="Công Nghệ"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";}
+    if(clb==="kinhdoanh"){clbName="Kinh Doanh"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";}
+    if(clb==="amnhac"){clbName="Âm Nhạc"; url="https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";}
 
-    if(confirm(`Bạn sắp đăng ký CLB ${clbName}. Tiếp tục?`)) {
-        // Tăng số lượng ngay khi click
-        counts[clbName]++;
+    if(confirm(`Bạn sắp đăng ký CLB ${clbName}. Tiếp tục?`)){
+        localCounts[clbName]++;
         capNhatGiaoDien();
-        window.open(url, "_blank"); // mở form trong tab mới
+        window.open(url,"_blank");
     }
 }
 
 // Xem giới thiệu
-function gioiThieu(clb) {
+function gioiThieu(clb){
     if(clb==="congnghe") alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
     if(clb==="kinhdoanh") alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
     if(clb==="amnhac") alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
 }
 
 // Cập nhật giao diện
-function capNhatGiaoDien() {
-    document.getElementById("countCongNghe").innerText = counts["Công Nghệ"];
-    document.getElementById("countKinhDoanh").innerText = counts["Kinh Doanh"];
-    document.getElementById("countAmNhac").innerText = counts["Âm Nhạc"];
+function capNhatGiaoDien(){
+    document.getElementById("countCongNghe").innerText = localCounts["Công Nghệ"];
+    document.getElementById("countKinhDoanh").innerText = localCounts["Kinh Doanh"];
+    document.getElementById("countAmNhac").innerText = localCounts["Âm Nhạc"];
 
-    document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCounts["Công Nghệ"]*100)+"%";
-    document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxCounts["Kinh Doanh"]*100)+"%";
-    document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxCounts["Âm Nhạc"]*100)+"%";
+    document.getElementById("progressCongNghe").style.width = (localCounts["Công Nghệ"]/maxCounts["Công Nghệ"]*100)+"%";
+    document.getElementById("progressKinhDoanh").style.width = (localCounts["Kinh Doanh"]/maxCounts["Kinh Doanh"]*100)+"%";
+    document.getElementById("progressAmNhac").style.width = (localCounts["Âm Nhạc"]/maxCounts["Âm Nhạc"]*100)+"%";
 }
 
-// Lấy dữ liệu từ CSV để đồng bộ
-async function laySoLuongCLB() {
-    try {
+// Lấy CSV và đồng bộ (chỉ cập nhật nếu CSV lớn hơn local)
+async function laySoLuongCLB(){
+    try{
         const res = await fetch(csvURL);
         const data = await res.text();
         const rows = data.split("\n").slice(1);
@@ -198,17 +196,14 @@ async function laySoLuongCLB() {
                 else if(clb.includes("Âm")) csvCounts["Âm Nhạc"]++;
             }
         });
-        // Nếu số lượng CSV lớn hơn số local, đồng bộ
         for(const k in csvCounts){
-            if(csvCounts[k]>counts[k]) counts[k]=csvCounts[k];
+            if(csvCounts[k] > localCounts[k]) localCounts[k] = csvCounts[k];
         }
         capNhatGiaoDien();
-    } catch(e){
-        console.log("Lỗi lấy dữ liệu CSV:", e);
-    }
+    }catch(e){ console.log("Lỗi lấy CSV:", e); }
 }
 
-// Chạy lần đầu và cập nhật mỗi 5 giây
+// Chạy lần đầu + cập nhật 5 giây
 laySoLuongCLB();
 setInterval(laySoLuongCLB,5000);
 </script>
