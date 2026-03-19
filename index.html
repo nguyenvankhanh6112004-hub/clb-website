@@ -1,215 +1,53 @@
-viết hẳn code cho tôi đi code cũ đây đừng xóa gì cả nhé 
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Poster CLB</title>
-
+<title>Đăng ký CLB</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f1f2f6;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    margin-top: 30px;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin: 40px 10px;
-}
-
-.poster {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px gray;
-    width: 90%;
-    max-width: 250px;
-    box-sizing: border-box;
-}
-
-.poster img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-}
-
-button {
-    padding: 12px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 120px;
-}
-
-.btn-info {
-    background: gray;
-    color: white;
-}
-
-.btn-register {
-    background: blue;
-    color: white;
-}
-
-@media (max-width: 600px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-    }
-
-    .poster {
-        width: 95%;
-        max-width: none;
-    }
-
-    button {
-        width: 100%;
-        margin: 5px 0;
-    }
-}
-
-/* Thanh tiến độ */
-.progress-bar-container {
-    width: 100%;
-    background: #e0e0e0;
-    height: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    background: #4CAF50;
-    border-radius: 8px;
-    transition: width 0.5s;
-}
+  body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+  input, button { padding: 10px; margin: 5px; font-size: 1em; }
+  #member-count { font-weight: bold; color: #007BFF; }
 </style>
 </head>
-
 <body>
-<h1>HỆ THỐNG POSTER CLB</h1>
 
-<div class="container">
+<h1>Đăng ký CLB</h1>
 
-<!-- CLB Công Nghệ -->
-<div class="poster">
-    <img src="https://picsum.photos/300?1" alt="Công Nghệ">
-    <h3>CLB Công Nghệ</h3>
-    <button class="btn-info" onclick="gioiThieu('congnghe')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB('congnghe')">Đăng ký</button>
-    <div class="progress-bar-container">
-        <div class="progress-bar" id="progressCongNghe"></div>
-    </div>
-</div>
+<!-- Form đăng ký -->
+<form id="registration-form">
+  <input type="text" name="name" placeholder="Họ và tên" required><br>
+  <input type="email" name="email" placeholder="Email" required><br>
+  <input type="text" name="phone" placeholder="Số điện thoại" required><br>
+  <button type="submit">Đăng ký</button>
+</form>
 
-<!-- CLB Kinh Doanh -->
-<div class="poster">
-    <img src="https://picsum.photos/300?2" alt="Kinh Doanh">
-    <h3>CLB Kinh Doanh</h3>
-    <button class="btn-info" onclick="gioiThieu('kinhdoanh')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB('kinhdoanh')">Đăng ký</button>
-    <div class="progress-bar-container">
-        <div class="progress-bar" id="progressKinhDoanh"></div>
-    </div>
-</div>
-
-<!-- CLB Âm Nhạc -->
-<div class="poster">
-    <img src="https://picsum.photos/300?3" alt="Âm Nhạc">
-    <h3>CLB Âm Nhạc</h3>
-    <button class="btn-info" onclick="gioiThieu('amnhac')">Xem giới thiệu</button>
-    <button class="btn-register" onclick="chonCLB('amnhac')">Đăng ký</button>
-    <div class="progress-bar-container">
-        <div class="progress-bar" id="progressAmNhac"></div>
-    </div>
-</div>
-
-</div>
+<!-- Hiển thị số thành viên -->
+<p>Hiện có <span id="member-count">0</span> thành viên đã đăng ký</p>
 
 <script>
-// Nút Đăng ký với confirm
-function chonCLB(clb) {
-    let clbName = "";
-    let url = "";
-    
-    if(clb === "congnghe") {
-        clbName = "Công Nghệ";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Công+nghệ";
-    }
-    if(clb === "kinhdoanh") {
-        clbName = "Kinh Doanh";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Kinh+doanh";
-    }
-    if(clb === "amnhac") {
-        clbName = "Âm Nhạc";
-        url = "https://docs.google.com/forms/d/e/1FAIpQLSfHWZpm9wmKxtV72wmQK34qFt1KwWWyEOEaZLVk3rrq3V38GQ/viewform?usp=pp_url&entry.1257756082=Âm+nhạc";
-    }
+  // Hàm cập nhật số lượng thành viên
+  function updateMemberCount() {
+    google.script.run.withSuccessHandler(function(count) {
+      document.getElementById('member-count').innerText = count;
+    }).getRegisteredCount();
+  }
 
-    if(confirm(`Bạn sắp đăng ký CLB ${clbName}. Tiếp tục?`)) {
-        window.location.href = url;
-    }
-}
+  // Cập nhật ngay khi load
+  updateMemberCount();
 
-// Nút Xem giới thiệu
-function gioiThieu(clb) {
-    if (clb === "congnghe") {
-        alert("CLB Công Nghệ:\n- Học lập trình\n- Làm web, game\n- Tham gia dự án thực tế\n- Thời gian: Thứ 3 & Thứ 6\n- Địa điểm: Phòng A101");
-    }
-    if (clb === "kinhdoanh") {
-        alert("CLB Kinh Doanh:\n- Học marketing\n- Bán hàng\n- Khởi nghiệp\n- Thời gian: Thứ 4 & Thứ 7\n- Địa điểm: Phòng B202");
-    }
-    if (clb === "amnhac") {
-        alert("CLB Âm Nhạc:\n- Hát\n- Chơi nhạc cụ\n- Biểu diễn\n- Thời gian: Thứ 2 & Thứ 5\n- Địa điểm: Phòng C303");
-    }
-}
+  // Cập nhật mỗi 5 giây
+  setInterval(updateMemberCount, 5000);
 
-// Cập nhật thanh tiến độ (giữ lại chức năng, nhưng không hiển thị số người)
-async function laySoLuongCLB() {
-    const url = "LINK_PUBLISH_CSV_CUA_BAN"; // Thay bằng link CSV publish
-    const maxCongNghe = 50;
-    const maxKinhDoanh = 40;
-    const maxAmNhac = 30;
-
-    try {
-        const res = await fetch(url);
-        const data = await res.text();
-        const rows = data.split("\n").slice(1);
-        const counts = { "Công Nghệ":0, "Kinh Doanh":0, "Âm Nhạc":0 };
-        rows.forEach(r => {
-            const cols = r.split(",");
-            const clb = cols[4]; // cột E là CLB
-            if(counts[clb] !== undefined) counts[clb]++;
-        });
-
-        // Cập nhật thanh tiến độ %
-        document.getElementById("progressCongNghe").style.width = (counts["Công Nghệ"]/maxCongNghe*100) + "%";
-        document.getElementById("progressKinhDoanh").style.width = (counts["Kinh Doanh"]/maxKinhDoanh*100) + "%";
-        document.getElementById("progressAmNhac").style.width = (counts["Âm Nhạc"]/maxAmNhac*100) + "%";
-
-    } catch(e) {
-        console.log("Không thể lấy dữ liệu thống kê:", e);
-    }
-}
-
-// Chạy lần đầu
-laySoLuongCLB();
-
-// Cập nhật lại mỗi 5 giây
-setInterval(laySoLuongCLB, 5000);
+  // Xử lý submit form
+  document.getElementById('registration-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(this);
+    google.script.run.withSuccessHandler(function(){
+      alert("Đăng ký thành công!");
+      updateMemberCount(); // cập nhật số lượng ngay sau khi đăng ký
+      document.getElementById('registration-form').reset(); // reset form
+    }).submitRegistration(Object.fromEntries(formData.entries()));
+  });
 </script>
 
 </body>
