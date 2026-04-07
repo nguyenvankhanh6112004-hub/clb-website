@@ -8,7 +8,153 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Hệ thống CLB</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #dfe4ea, #ced6e0);
+    text-align: center;
+}
+
+h1 {
+    margin: 30px 0;
+    font-size: 32px;
+    color: #2f3542;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 20px;
+}
+
+/* CARD */
+.poster {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 260px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.poster:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* IMAGE */
+.poster img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* TITLE */
+.poster h3 {
+    margin: 15px 0;
+    color: #2f3542;
+}
+
+/* BUTTONS */
+.buttons {
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 10px 12px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 110px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+/* XEM GIỚI THIỆU */
+.btn-info {
+    background: #2f3542;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #57606f;
+}
+
+/* ĐĂNG KÝ */
+.btn-register {
+    background: #1e90ff;
+    color: white;
+}
+
+.btn-register:hover {
+    background: #3742fa;
+}
+</style>
+</head>
+
+<body>
+
+<h1>HỆ THỐNG CÂU LẠC BỘ</h1>
+
+<div class="container" id="container"></div>
+
+<script>
+// 🔥 DANH SÁCH CLB
+const clubs = [
+    { name: "CLB Âm Nhạc", img: "an.jpg", fb: "https://www.facebook.com/amnhacsaodo" },
+    { name: "CLB Kinh Doanh", img: "kd.jpg", fb: "https://facebook.com/kinhdoanh" },
+    { name: "CLB Công Nghệ", img: "cn.jpg", fb: "https://facebook.com/congnghe" },
+    { name: "CLB Tay Chung Tay", img: "tct.jpg", fb: "https://facebook.com/taychungtay" },
+    { name: "CLB SMC", img: "smc.jpg", fb: "https://facebook.com/smc" },
+    { name: "CLB Thanh Niên Xung Kích", img: "tnxk.jpg", fb: "https://facebook.com/thanh_nien_xung_kich" }
+];
+
+// 🔥 TẠO GIAO DIỆN
+const container = document.getElementById("container");
+
+clubs.forEach(club => {
+    container.innerHTML += `
+        <div class="poster">
+            <img src="${club.img}" onclick="moFB('${club.fb}')">
+            <h3>${club.name}</h3>
+            <div class="buttons">
+                <button class="btn-info" onclick="moFB('${club.fb}')">Giới thiệu</button>
+                <button class="btn-register" onclick="dangKy('${club.fb}')">Đăng ký</button>
+            </div>
+        </div>
+    `;
+});
+
+// 🔥 CHỨC NĂNG
+function moFB(link){
+    window.open(link, "_blank");
+}
+
+function dangKy(link){
+    if(confirm("Bạn sẽ được chuyển đến trang CLB để đăng ký, tiếp tục?")){
+        window.open(link, "_blank");
+    }
+}
+</script>
+
+</body>
+</html>
     font-family: Arial, sans-serif;
 }
 
