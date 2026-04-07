@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hệ thống CLB</title>
 
 <style>
@@ -18,17 +19,17 @@ body {
 }
 
 h1 {
-    margin: 30px 0;
-    font-size: 32px;
+    margin: 25px 0;
+    font-size: 30px;
     color: #2f3542;
 }
 
-/* GRID CÂN ĐẸP */
+/* GRID */
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    padding: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
     max-width: 1100px;
     margin: auto;
 }
@@ -43,14 +44,14 @@ h1 {
 }
 
 .poster:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 /* ẢNH */
 .poster img {
     width: 100%;
-    height: 180px;
+    height: 170px;
     object-fit: contain;
     background: #f1f2f6;
     padding: 10px;
@@ -64,7 +65,8 @@ h1 {
 
 /* TITLE */
 .poster h3 {
-    margin: 15px 0;
+    margin: 12px 0;
+    font-size: 18px;
     color: #2f3542;
 }
 
@@ -104,28 +106,48 @@ button {
     background: #3742fa;
 }
 
-/* MODAL XEM ẢNH */
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
     z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
+    inset: 0;
+    background: rgba(0,0,0,0.85);
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .modal img {
-    max-width: 80%;
+    max-width: 100%;
     max-height: 80%;
     border-radius: 10px;
 }
 
-.modal:active {
-    display: none;
+/* MOBILE TỐI ƯU */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    .container {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .poster img {
+        height: 140px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
 }
 </style>
 </head>
@@ -146,13 +168,9 @@ const clubs = [
     { name: "CLB Âm Nhạc", img: "amnhac.jpg", fb: "https://www.facebook.com/amnhacsaodo" },
     { name: "CLB Kinh Doanh", img: "kd.jpg", fb: "https://facebook.com/kinhdoanh" },
     { name: "CLB Công Nghệ", img: "cn.jpg", fb: "https://facebook.com/congnghe" },
-
     { name: "CLB Tay Chung Tay", img: "tct.jpg", fb: "https://www.facebook.com/taychungtay.vn" },
-
     { name: "CLB SMC", img: "smc.jpg", fb: "https://www.facebook.com/smcsaodo" },
-
     { name: "CLB Thanh Niên Xung Kích", img: "tnxk.jpg", fb: "https://www.facebook.com/TNXKDHSD" },
-
     { name: "CLB Linh Quyền Đạo", img: "linhquyendao.jpg", fb: "https://www.facebook.com/" }
 ];
 
@@ -183,7 +201,7 @@ function dangKy(link){
     }
 }
 
-/* xem ảnh to */
+/* xem ảnh */
 function xemAnh(src){
     document.getElementById("modal").style.display = "flex";
     document.getElementById("modalImg").src = src;
