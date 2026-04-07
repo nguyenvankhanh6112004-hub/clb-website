@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hệ thống CLB</title>
+<title>Hệ thống CLB Trường Đại Học Sao Đỏ</title>
 
 <style>
 * {
@@ -18,10 +18,17 @@ body {
     text-align: center;
 }
 
-h1 {
+/* HEADER */
+.header {
     margin: 25px 0;
-    font-size: 30px;
-    color: #2f3542;
+}
+
+.header h1 {
+    font-size: 28px;
+    line-height: 1.4;
+    background: linear-gradient(90deg, #1e90ff, #3742fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* GRID */
@@ -60,13 +67,13 @@ h1 {
 }
 
 .poster img:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
 }
 
 /* TITLE */
 .poster h3 {
     margin: 12px 0;
-    font-size: 18px;
+    font-size: 17px;
     color: #2f3542;
 }
 
@@ -124,9 +131,9 @@ button {
     border-radius: 10px;
 }
 
-/* MOBILE TỐI ƯU */
+/* MOBILE */
 @media (max-width: 600px) {
-    h1 {
+    .header h1 {
         font-size: 22px;
     }
 
@@ -154,7 +161,12 @@ button {
 
 <body>
 
-<h1>HỆ THỐNG CÂU LẠC BỘ</h1>
+<div class="header">
+    <h1>
+        HỆ THỐNG CLB<br>
+        TRƯỜNG ĐẠI HỌC SAO ĐỎ
+    </h1>
+</div>
 
 <div class="container" id="container"></div>
 
@@ -189,25 +201,21 @@ clubs.forEach(club => {
     `;
 });
 
-/* mở facebook */
 function moFB(link){
     window.open(link, "_blank");
 }
 
-/* đăng ký */
 function dangKy(link){
     if(confirm("Bạn sẽ được chuyển đến trang CLB để đăng ký, tiếp tục?")){
         window.open(link, "_blank");
     }
 }
 
-/* xem ảnh */
 function xemAnh(src){
     document.getElementById("modal").style.display = "flex";
     document.getElementById("modalImg").src = src;
 }
 
-/* đóng */
 function dongModal(){
     document.getElementById("modal").style.display = "none";
 }
