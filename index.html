@@ -17,27 +17,39 @@ display:flex;justify-content:center;align-items:center;
 z-index:9999;color:#fff;flex-direction:column;
 }
 .splash-content img{
-width:120px;background:#fff;padding:10px;border-radius:50%;
+width:100px;background:#fff;padding:8px;border-radius:50%;
 animation:spin 3s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* LOADING */
-.loading{width:220px;height:6px;background:#ffffff33;margin:20px auto;border-radius:10px;overflow:hidden;position:relative;}
+.loading{width:200px;height:5px;background:#ffffff33;margin:15px auto;border-radius:10px;overflow:hidden;position:relative;}
 .loading span{
 position:absolute;left:-40%;width:40%;height:100%;
 background:linear-gradient(90deg,transparent,#fff,transparent);
 animation:loadingMove 1.2s linear infinite;
 }
 @keyframes loadingMove{0%{left:-40%}100%{left:100%}}
-#percent{margin-top:10px;font-size:18px;font-weight:bold}
+#percent{margin-top:10px;font-size:16px;font-weight:bold}
 .fade-out{opacity:0;transition:.8s}
 
-/* HEADER */
-h1{
-margin:20px 0;font-size:26px;
+/* HEADER + LOGO (CHỈ THÊM PHẦN NÀY) */
+.header{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-top:20px;
+}
+.header img{
+width:40px;height:40px;border-radius:50%;background:#fff;padding:4px;
+}
+.header h1{
+font-size:22px;
 background:linear-gradient(90deg,#1e90ff,#3742fa);
--webkit-background-clip:text;-webkit-text-fill-color:transparent
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+text-align:left;
 }
 
 /* SEARCH */
@@ -77,40 +89,25 @@ width:110px;font-weight:bold;cursor:pointer
 .btn-register{background:#1e90ff;color:#fff}
 
 /* FORM */
-#formBox{
+#formBox,#confirmBox{
 display:none;
 position:fixed;inset:0;
 background:#0008;
 justify-content:center;align-items:center;
 z-index:9999
 }
-.form{
-background:#fff;padding:20px;border-radius:12px;width:300px
+.form,.confirm{
+background:#fff;padding:20px;border-radius:12px;width:320px
 }
 .form input{
 width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
 }
-.form .row{display:flex;gap:10px;margin-top:10px}
-
-/* CONFIRM */
-#confirmBox{
-display:none;
-position:fixed;inset:0;
-background:#0008;
-justify-content:center;align-items:center;
-z-index:10000;
-}
-.confirm{
-background:#fff;padding:20px;border-radius:12px;width:320px;text-align:left;
-animation:fadeIn .3s
-}
-.confirm pre{
-background:#f1f2f6;padding:10px;border-radius:6px;font-size:13px;
-white-space:pre-wrap
-}
+.row{display:flex;gap:10px;margin-top:10px}
 
 /* MOBILE */
 @media(max-width:600px){
+.header{flex-direction:column}
+.header h1{text-align:center}
 button{width:100%}
 .buttons{flex-direction:column}
 }
@@ -129,7 +126,11 @@ button{width:100%}
 </div>
 </div>
 
+<!-- HEADER + LOGO -->
+<div class="header">
+<img src="https://raw.githubusercontent.com/nguyenvankhanh6112004-hub/clb-website/main/icon.jpg">
 <h1>HỆ THỐNG CLB<br>TRƯỜNG ĐẠI HỌC SAO ĐỎ</h1>
+</div>
 
 <div class="search-box">
 <input type="text" placeholder="Tìm CLB..." onkeyup="timCLB(this.value)">
@@ -140,13 +141,11 @@ button{width:100%}
 <!-- FORM -->
 <div id="formBox">
 <div class="form">
-<h3 id="formTitle">Đăng ký</h3>
-
+<h3 id="formTitle"></h3>
 <input id="ten" placeholder="Họ tên">
 <input id="lop" placeholder="Lớp">
 <input id="khoa" placeholder="Khóa">
 <input id="sdt" placeholder="SĐT">
-
 <div class="row">
 <button onclick="moConfirm()" class="btn-register">Gửi</button>
 <button onclick="dongForm()">Hủy</button>
@@ -159,7 +158,6 @@ button{width:100%}
 <div class="confirm">
 <h3>Xác nhận gửi</h3>
 <pre id="previewText"></pre>
-
 <div class="row">
 <button onclick="gui()" class="btn-register">Xác nhận</button>
 <button onclick="dongConfirm()">Hủy</button>
@@ -202,17 +200,17 @@ hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k)));
 }
 
 function moFB(page){
+if(!page){alert("CLB chưa có Facebook!");return;}
 window.location.href="https://facebook.com/"+page;
 }
 
-/* FORM */
 let currentPage="",currentClub="",currentText="";
 
 function moForm(page,name){
 if(!page){alert("CLB chưa có Facebook!");return;}
 currentPage=page;
 currentClub=name;
-document.getElementById("formTitle").innerText="Đăng ký " + name;
+document.getElementById("formTitle").innerText="Đăng ký "+name;
 document.getElementById("formBox").style.display="flex";
 }
 
@@ -220,24 +218,20 @@ function dongForm(){
 document.getElementById("formBox").style.display="none";
 }
 
-/* FIX CHÍNH Ở ĐÂY */
 function moConfirm(){
 let ten=document.getElementById("ten").value;
 let lop=document.getElementById("lop").value;
 let khoa=document.getElementById("khoa").value;
 let sdt=document.getElementById("sdt").value;
 
-if(!ten||!lop||!khoa||!sdt){
-alert("Vui lòng nhập đầy đủ!");
-return;
-}
+if(!ten||!lop||!khoa||!sdt){alert("Vui lòng nhập đầy đủ!");return;}
 
 currentText=
-"Tôi muốn đăng ký " + currentClub + "\n\n" +
-"Họ tên: " + ten + "\n" +
-"Lớp: " + lop + "\n" +
-"Khóa: " + khoa + "\n" +
-"SĐT: " + sdt;
+"Tôi muốn đăng ký "+currentClub+"\n\n"+
+"Họ tên: "+ten+"\n"+
+"Lớp: "+lop+"\n"+
+"Khóa: "+khoa+"\n"+
+"SĐT: "+sdt;
 
 document.activeElement.blur();
 
