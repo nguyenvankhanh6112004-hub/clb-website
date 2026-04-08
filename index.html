@@ -206,7 +206,7 @@ function dongForm(){
 document.getElementById("formBox").style.display="none";
 }
 
-/* GỬI */
+/* GỬI - FIX BÀN PHÍM */
 function guiThongTin(){
 let ten=document.getElementById("ten").value;
 let lop=document.getElementById("lop").value;
@@ -218,36 +218,38 @@ alert("Vui lòng nhập đầy đủ!");
 return;
 }
 
-let text = 
+let text=
 "Tôi muốn đăng ký " + currentClub + "\n\n" +
 "Họ tên: " + ten + "\n" +
 "Lớp: " + lop + "\n" +
 "Khóa: " + khoa + "\n" +
 "SĐT: " + sdt;
 
+/* TẮT BÀN PHÍM */
+document.activeElement.blur();
+
+setTimeout(()=>{
 if(confirm("Xác nhận gửi?\n\n"+text)){
 let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(text);
-window.location.href = link;
+window.location.href=link;
 
-/* reset form */
+/* reset */
 document.getElementById("ten").value="";
 document.getElementById("lop").value="";
 document.getElementById("khoa").value="";
 document.getElementById("sdt").value="";
 }
+},200);
 }
 
-/* FIX LOADING MOBILE */
+/* LOADING */
 document.addEventListener("DOMContentLoaded", ()=>{
 let p=0;
 let percentText=document.getElementById("percent");
 
 let load=setInterval(()=>{
 p+=2;
-
-if(percentText){
-percentText.innerText=p+"%";
-}
+if(percentText){percentText.innerText=p+"%";}
 
 if(p>=100){
 clearInterval(load);
