@@ -14,16 +14,31 @@ body{background:linear-gradient(135deg,#dfe4ea,#ced6e0);text-align:center}
 position:fixed;inset:0;
 background:linear-gradient(135deg,#1e90ff,#3742fa);
 display:flex;justify-content:center;align-items:center;
-z-index:9999;color:#fff
+z-index:9999;color:#fff;flex-direction:column;
 }
+
 .splash-content img{
 width:120px;background:#fff;padding:10px;border-radius:50%;
-animation:spin 3s linear infinite
+animation:spin 3s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading{width:200px;height:5px;background:#fff3;margin:15px auto;border-radius:5px;overflow:hidden}
-.loading span{display:block;height:100%;background:#fff;animation:load 2s forwards}
-@keyframes load{to{width:100%}}
+
+/* LOADING */
+.loading{
+width:220px;height:6px;background:#ffffff33;
+margin:20px auto;border-radius:10px;overflow:hidden;position:relative;
+}
+.loading span{
+position:absolute;left:-40%;width:40%;height:100%;
+background:linear-gradient(90deg,transparent,#fff,transparent);
+animation:loadingMove 1.2s linear infinite;
+}
+@keyframes loadingMove{
+0%{left:-40%}
+100%{left:100%}
+}
+
+#percent{margin-top:10px;font-size:18px;font-weight:bold}
 .fade-out{opacity:0;transition:.8s}
 
 /* HEADER */
@@ -34,13 +49,8 @@ background:linear-gradient(90deg,#1e90ff,#3742fa);
 }
 
 /* SEARCH */
-.search-box{
-margin:10px auto;
-max-width:300px
-}
-.search-box input{
-width:100%;padding:10px;border-radius:8px;border:none
-}
+.search-box{margin:10px auto;max-width:300px}
+.search-box input{width:100%;padding:10px;border-radius:8px;border:none}
 
 /* GRID */
 .container{
@@ -68,9 +78,28 @@ background:#f1f2f6;padding:10px
 
 /* BUTTON */
 .buttons{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
-button{padding:10px;border:none;border-radius:8px;width:110px;font-weight:bold;cursor:pointer}
+button{
+padding:10px;border:none;border-radius:8px;
+width:110px;font-weight:bold;cursor:pointer
+}
 .btn-info{background:#2f3542;color:#fff}
 .btn-register{background:#1e90ff;color:#fff}
+
+/* FORM */
+#formBox{
+display:none;
+position:fixed;inset:0;
+background:#0008;
+justify-content:center;align-items:center;
+z-index:9999
+}
+.form{
+background:#fff;padding:20px;border-radius:10px;width:300px
+}
+.form input{
+width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
+}
+.form .row{display:flex;gap:10px;margin-top:10px}
 
 /* MOBILE */
 @media(max-width:600px){
@@ -88,6 +117,7 @@ button{width:100%}
 <img src="https://raw.githubusercontent.com/nguyenvankhanh6112004-hub/clb-website/main/icon.jpg">
 <h2>ĐẠI HỌC SAO ĐỎ</h2>
 <div class="loading"><span></span></div>
+<h3 id="percent">0%</h3>
 </div>
 </div>
 
@@ -99,15 +129,33 @@ button{width:100%}
 
 <div class="container" id="container"></div>
 
+<!-- FORM -->
+<div id="formBox">
+<div class="form">
+<h3 id="formTitle">Đăng ký</h3>
+
+<input id="ten" placeholder="Họ tên">
+<input id="lop" placeholder="Lớp">
+<input id="khoa" placeholder="Khóa">
+<input id="sdt" placeholder="SĐT">
+
+<div class="row">
+<button onclick="guiThongTin()" class="btn-register">Gửi</button>
+<button onclick="dongForm()">Hủy</button>
+</div>
+
+</div>
+</div>
+
 <script>
 const clubs=[
-{name:"CLB Âm Nhạc",img:"amnhac.jpg",fb:"https://www.facebook.com/amnhacsaodo"},
-{name:"CLB Kinh Doanh",img:"kd.jpg",fb:"https://facebook.com/kinhdoanh"},
-{name:"CLB Công Nghệ",img:"cn.jpg",fb:"https://facebook.com/congnghe"},
-{name:"CLB Tay Chung Tay",img:"tct.jpg",fb:"https://www.facebook.com/taychungtay.vn"},
-{name:"CLB SMC",img:"smc.jpg",fb:"https://www.facebook.com/smcsaodo"},
-{name:"CLB Thanh Niên Xung Kích",img:"tnxk.jpg",fb:"https://www.facebook.com/TNXKDHSD"},
-{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",fb:"https://www.facebook.com/"}
+{name:"CLB Âm Nhạc",img:"amnhac.jpg",fb:"amnhacsaodo"},
+{name:"CLB Kinh Doanh",img:"kd.jpg",fb:"kinhdoanh"},
+{name:"CLB Công Nghệ",img:"cn.jpg",fb:"congnghe"},
+{name:"CLB Tay Chung Tay",img:"tct.jpg",fb:"taychungtay.vn"},
+{name:"CLB SMC",img:"smc.jpg",fb:"smcsaodo"},
+{name:"CLB Thanh Niên Xung Kích",img:"tnxk.jpg",fb:"TNXKDHSD"},
+{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",fb:""}
 ];
 
 const container=document.getElementById("container");
@@ -121,7 +169,7 @@ container.innerHTML+=`
 <h3>${club.name}</h3>
 <div class="buttons">
 <button class="btn-info" onclick="moFB('${club.fb}')">Giới thiệu</button>
-<button class="btn-register" onclick="dangKy('${club.fb}')">Đăng ký</button>
+<button class="btn-register" onclick="moForm('${club.fb}','${club.name}')">Đăng ký</button>
 </div>
 </div>`;
 });
@@ -135,23 +183,71 @@ let k=key.toLowerCase();
 hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k)));
 }
 
-/* LINK FB */
-function moFB(link){
-window.open(link,"_blank");
+/* FB */
+function moFB(page){
+window.open("https://facebook.com/"+page,"_blank");
 }
 
-function dangKy(link){
-if(confirm("Bạn sẽ được chuyển đến trang CLB để đăng ký, tiếp tục?")){
+/* FORM */
+let currentPage="",currentClub="";
+
+function moForm(page,name){
+if(!page){
+alert("CLB chưa có Facebook!");
+return;
+}
+currentPage=page;
+currentClub=name;
+document.getElementById("formTitle").innerText="Đăng ký " + name;
+document.getElementById("formBox").style.display="flex";
+}
+
+function dongForm(){
+document.getElementById("formBox").style.display="none";
+}
+
+/* GỬI */
+function guiThongTin(){
+let ten=document.getElementById("ten").value;
+let lop=document.getElementById("lop").value;
+let khoa=document.getElementById("khoa").value;
+let sdt=document.getElementById("sdt").value;
+
+if(!ten||!lop||!khoa||!sdt){
+alert("Vui lòng nhập đầy đủ!");
+return;
+}
+
+let text = 
+"Tôi muốn đăng ký " + currentClub + "\n\n" +
+"Họ tên: " + ten + "\n" +
+"Lớp: " + lop + "\n" +
+"Khóa: " + khoa + "\n" +
+"SĐT: " + sdt;
+
+if(confirm("Xác nhận gửi?\n\n"+text)){
+let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(text);
 window.open(link,"_blank");
+dongForm();
 }
 }
 
-/* SPLASH */
+/* LOADING */
 window.onload=()=>{
-setTimeout(()=>{
+let p=0;
+let percentText=document.getElementById("percent");
+
+let load=setInterval(()=>{
+p+=2;
+percentText.innerText=p+"%";
+
+if(p>=100){
+clearInterval(load);
 document.getElementById("splash").classList.add("fade-out");
 setTimeout(()=>{document.getElementById("splash").style.display="none"},800);
-},2000);
+}
+
+},40);
 };
 </script>
 
