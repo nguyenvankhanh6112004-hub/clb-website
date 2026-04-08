@@ -185,7 +185,7 @@ hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k)));
 
 /* FB */
 function moFB(page){
-window.open("https://facebook.com/"+page,"_blank");
+window.location.href="https://facebook.com/"+page;
 }
 
 /* FORM */
@@ -227,19 +227,27 @@ let text =
 
 if(confirm("Xác nhận gửi?\n\n"+text)){
 let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(text);
-window.open(link,"_blank");
-dongForm();
+window.location.href = link;
+
+/* reset form */
+document.getElementById("ten").value="";
+document.getElementById("lop").value="";
+document.getElementById("khoa").value="";
+document.getElementById("sdt").value="";
 }
 }
 
-/* LOADING */
-window.onload=()=>{
+/* FIX LOADING MOBILE */
+document.addEventListener("DOMContentLoaded", ()=>{
 let p=0;
 let percentText=document.getElementById("percent");
 
 let load=setInterval(()=>{
 p+=2;
+
+if(percentText){
 percentText.innerText=p+"%";
+}
 
 if(p>=100){
 clearInterval(load);
@@ -248,7 +256,7 @@ setTimeout(()=>{document.getElementById("splash").style.display="none"},800);
 }
 
 },40);
-};
+});
 </script>
 
 </body>
