@@ -16,7 +16,6 @@ background:linear-gradient(135deg,#1e90ff,#3742fa);
 display:flex;justify-content:center;align-items:center;
 z-index:9999;color:#fff;flex-direction:column;
 }
-
 .splash-content img{
 width:120px;background:#fff;padding:10px;border-radius:50%;
 animation:spin 3s linear infinite;
@@ -24,20 +23,13 @@ animation:spin 3s linear infinite;
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* LOADING */
-.loading{
-width:220px;height:6px;background:#ffffff33;
-margin:20px auto;border-radius:10px;overflow:hidden;position:relative;
-}
+.loading{width:220px;height:6px;background:#ffffff33;margin:20px auto;border-radius:10px;overflow:hidden;position:relative;}
 .loading span{
 position:absolute;left:-40%;width:40%;height:100%;
 background:linear-gradient(90deg,transparent,#fff,transparent);
 animation:loadingMove 1.2s linear infinite;
 }
-@keyframes loadingMove{
-0%{left:-40%}
-100%{left:100%}
-}
-
+@keyframes loadingMove{0%{left:-40%}100%{left:100%}}
 #percent{margin-top:10px;font-size:18px;font-weight:bold}
 .fade-out{opacity:0;transition:.8s}
 
@@ -73,7 +65,6 @@ animation:fadeIn .6s forwards
 width:100%;height:160px;object-fit:contain;
 background:#f1f2f6;padding:10px
 }
-
 .poster h3{margin:10px 0}
 
 /* BUTTON */
@@ -94,12 +85,29 @@ justify-content:center;align-items:center;
 z-index:9999
 }
 .form{
-background:#fff;padding:20px;border-radius:10px;width:300px
+background:#fff;padding:20px;border-radius:12px;width:300px
 }
 .form input{
 width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
 }
 .form .row{display:flex;gap:10px;margin-top:10px}
+
+/* CONFIRM */
+#confirmBox{
+display:none;
+position:fixed;inset:0;
+background:#0008;
+justify-content:center;align-items:center;
+z-index:10000;
+}
+.confirm{
+background:#fff;padding:20px;border-radius:12px;width:320px;text-align:left;
+animation:fadeIn .3s
+}
+.confirm pre{
+background:#f1f2f6;padding:10px;border-radius:6px;font-size:13px;
+white-space:pre-wrap
+}
 
 /* MOBILE */
 @media(max-width:600px){
@@ -140,10 +148,22 @@ button{width:100%}
 <input id="sdt" placeholder="SĐT">
 
 <div class="row">
-<button onclick="guiThongTin()" class="btn-register">Gửi</button>
+<button onclick="moConfirm()" class="btn-register">Gửi</button>
 <button onclick="dongForm()">Hủy</button>
 </div>
+</div>
+</div>
 
+<!-- CONFIRM -->
+<div id="confirmBox">
+<div class="confirm">
+<h3>Xác nhận gửi</h3>
+<pre id="previewText"></pre>
+
+<div class="row">
+<button onclick="gui()" class="btn-register">Xác nhận</button>
+<button onclick="dongConfirm()">Hủy</button>
+</div>
 </div>
 </div>
 
@@ -174,28 +194,22 @@ container.innerHTML+=`
 </div>`;
 });
 }
-
 hienThi(clubs);
 
-/* SEARCH */
 function timCLB(key){
 let k=key.toLowerCase();
 hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k)));
 }
 
-/* FB */
 function moFB(page){
 window.location.href="https://facebook.com/"+page;
 }
 
 /* FORM */
-let currentPage="",currentClub="";
+let currentPage="",currentClub="",currentText="";
 
 function moForm(page,name){
-if(!page){
-alert("CLB chưa có Facebook!");
-return;
-}
+if(!page){alert("CLB chưa có Facebook!");return;}
 currentPage=page;
 currentClub=name;
 document.getElementById("formTitle").innerText="Đăng ký " + name;
@@ -206,8 +220,8 @@ function dongForm(){
 document.getElementById("formBox").style.display="none";
 }
 
-/* GỬI - FIX BÀN PHÍM */
-function guiThongTin(){
+/* FIX CHÍNH Ở ĐÂY */
+function moConfirm(){
 let ten=document.getElementById("ten").value;
 let lop=document.getElementById("lop").value;
 let khoa=document.getElementById("khoa").value;
@@ -218,28 +232,28 @@ alert("Vui lòng nhập đầy đủ!");
 return;
 }
 
-let text=
+currentText=
 "Tôi muốn đăng ký " + currentClub + "\n\n" +
 "Họ tên: " + ten + "\n" +
 "Lớp: " + lop + "\n" +
 "Khóa: " + khoa + "\n" +
 "SĐT: " + sdt;
 
-/* TẮT BÀN PHÍM */
 document.activeElement.blur();
 
 setTimeout(()=>{
-if(confirm("Xác nhận gửi?\n\n"+text)){
-let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(text);
-window.location.href=link;
-
-/* reset */
-document.getElementById("ten").value="";
-document.getElementById("lop").value="";
-document.getElementById("khoa").value="";
-document.getElementById("sdt").value="";
-}
+document.getElementById("previewText").innerText=currentText;
+document.getElementById("confirmBox").style.display="flex";
 },200);
+}
+
+function dongConfirm(){
+document.getElementById("confirmBox").style.display="none";
+}
+
+function gui(){
+let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText);
+window.location.href=link;
 }
 
 /* LOADING */
@@ -249,14 +263,13 @@ let percentText=document.getElementById("percent");
 
 let load=setInterval(()=>{
 p+=2;
-if(percentText){percentText.innerText=p+"%";}
+if(percentText) percentText.innerText=p+"%";
 
 if(p>=100){
 clearInterval(load);
 document.getElementById("splash").classList.add("fade-out");
 setTimeout(()=>{document.getElementById("splash").style.display="none"},800);
 }
-
 },40);
 });
 </script>
