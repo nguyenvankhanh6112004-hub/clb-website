@@ -110,12 +110,23 @@ label:hover{background:#eef5ff}
 
 /* FORM */
 .form,.confirm{
-background:#fff;padding:20px;border-radius:12px;width:320px
+background:#fff;padding:20px;border-radius:15px;width:340px
 }
 .form input{
-width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
+width:100%;margin:6px 0;padding:9px;border-radius:6px;border:1px solid #ccc
 }
 .row{display:flex;gap:10px;margin-top:10px}
+
+/* CONFIRM VIP */
+.confirm h3{color:#1e90ff;margin-bottom:10px}
+.preview{
+background:#f1f2f6;
+padding:10px;
+border-radius:10px;
+text-align:left;
+font-size:14px;
+white-space:pre-line;
+}
 </style>
 </head>
 
@@ -166,22 +177,22 @@ width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
 <!-- FORM -->
 <div id="formBox"><div class="form">
 <h3 id="formTitle"></h3>
-<input id="ten" placeholder="Họ tên">
+<input id="ten" placeholder="Họ và tên">
 <input id="lop" placeholder="Lớp">
 <input id="khoa" placeholder="Khóa">
-<input id="sdt" placeholder="SĐT">
+<input id="sdt" placeholder="Số điện thoại">
 <div class="row">
-<button onclick="moConfirm()" class="btn-register">Gửi</button>
+<button onclick="moConfirm()" class="btn-register">Gửi đăng ký</button>
 <button onclick="dongForm()">Hủy</button>
 </div>
 </div></div>
 
 <!-- CONFIRM -->
 <div id="confirmBox"><div class="confirm">
-<h3>Xác nhận gửi</h3>
-<pre id="previewText"></pre>
+<h3>📩 Xác nhận đăng ký</h3>
+<div class="preview" id="previewText"></div>
 <div class="row">
-<button onclick="gui()" class="btn-register">Xác nhận</button>
+<button onclick="gui()" class="btn-register">Xác nhận & gửi</button>
 <button onclick="dongConfirm()">Hủy</button>
 </div>
 </div></div>
@@ -194,18 +205,9 @@ const clubs=[
 {name:"CLB Tay Chung Tay",img:"tct.jpg",fb:"taychungtay.vn"},
 {name:"CLB SMC",img:"smc.jpg",fb:"smcsaodo"},
 {name:"CLB Thanh Niên Xung Kích",img:"tnxk.jpg",fb:"TNXKDHSD"},
-{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",fb:"https://www.facebook.com/people/CLB-v%C3%B5-thu%E1%BA%ADt-Linh-Quy%E1%BB%81n-%C4%90%E1%BA%A1o-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Sao-%C4%90%E1%BB%8F/100057460838671/"}
+{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",
+ fb:"https://www.facebook.com/people/CLB-v%C3%B5-thu%E1%BA%ADt-Linh-Quy%E1%BB%81n-%C4%90%E1%BA%A1o-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Sao-%C4%90%E1%BB%8F/100057460838671/"}
 ];
-
-// ===== FB =====
-function moFB(page){
-if(!page){alert("CLB chưa có Facebook!");return;}
-if(page.startsWith("http")){
-window.open(page,"_blank");
-}else{
-window.open("https://facebook.com/"+page,"_blank");
-}
-}
 
 // ===== HIỂN THỊ =====
 const container=document.getElementById("container");
@@ -217,7 +219,7 @@ container.innerHTML+=`
 <img src="${c.img}?v=${Date.now()}">
 <h3>${c.name}</h3>
 <div class="buttons">
-<button class="btn-info" onclick="moFB('${c.fb}')">Giới thiệu</button>
+<button class="btn-info" onclick="window.open('${c.fb.startsWith("http")?c.fb:"https://facebook.com/"+c.fb}','_blank')">Giới thiệu</button>
 <button class="btn-register" onclick="moTest('${c.name}','${c.fb}')">Đăng ký</button>
 </div>
 </div>`;
@@ -229,55 +231,47 @@ function timCLB(k){
 hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k.toLowerCase())));
 }
 
-// ===== CÂU HỎI =====
-const questionSet={
-"default":[
-{q:"Bạn có thể tham gia CLB?",a:["Rất tích cực","Bình thường","Ít","Không"]},
-{q:"Bạn có kỹ năng?",a:["Tốt","Cơ bản","Đang học","Chưa"]},
-{q:"Bạn teamwork?",a:["Rất tốt","Ổn","Kém","Không"]},
-{q:"Mục tiêu?",a:["Phát triển","Trải nghiệm","Kết bạn","Không rõ"]}
-]
-};
-
 // ===== TEST =====
 let current=0,score=0,currentClub="",currentPage="";
 
 function moTest(name,page){
 currentClub=name;
 currentPage=page;
-
-let qs=questionSet["default"];
-
 document.getElementById("testBox").style.display="flex";
 current=0;score=0;
 
+let qs=[
+"Bạn có thể tham gia CLB?",
+"Bạn có kỹ năng?",
+"Bạn teamwork?",
+"Mục tiêu?"
+];
+
 let html="";
-qs.forEach((item,i)=>{
+qs.forEach((q,i)=>{
 html+=`
 <div class="slide">
-<p>${i+1}. ${item.q}</p>
-<label><input type="radio" name="q${i}" value="5" onchange="updateScore()"> ${item.a[0]}</label>
-<label><input type="radio" name="q${i}" value="3" onchange="updateScore()"> ${item.a[1]}</label>
-<label><input type="radio" name="q${i}" value="1" onchange="updateScore()"> ${item.a[2]}</label>
-<label><input type="radio" name="q${i}" value="0" onchange="updateScore()"> ${item.a[3]}</label>
+<p>${i+1}. ${q}</p>
+<label><input type="radio" name="q${i}" value="5" onchange="updateScore()"> Rất tốt</label>
+<label><input type="radio" name="q${i}" value="3" onchange="updateScore()"> Bình thường</label>
+<label><input type="radio" name="q${i}" value="1" onchange="updateScore()"> Ít</label>
+<label><input type="radio" name="q${i}" value="0" onchange="updateScore()"> Không</label>
 </div>`;
 });
 
-document.getElementById("slides").innerHTML=html;
+slides.innerHTML=html;
 updateUI();
 }
 
 function updateScore(){
 score=0;
-document.querySelectorAll('#slides input:checked').forEach(e=>{
-score+=+e.value;
-});
+document.querySelectorAll('#slides input:checked').forEach(e=>score+=+e.value);
 document.getElementById("score").innerText=score;
 }
 
 function updateUI(){
-document.getElementById("slides").style.transform=`translateX(-${current*100}%)`;
-document.getElementById("bar").style.width=((current+1)/4*100)+"%";
+slides.style.transform=`translateX(-${current*100}%)`;
+bar.style.width=((current+1)/4*100)+"%";
 }
 
 function next(){current<3?(current++,updateUI()):finish();}
@@ -285,32 +279,73 @@ function prev(){if(current>0){current--;updateUI();}}
 
 function finish(){
 if(score>=10){
-alert("🎉 Chúc mừng bạn đã đạt điều kiện để đăng ký");
-document.getElementById("testBox").style.display="none";
+alert("🎉 Bạn đã đủ điều kiện đăng ký!");
+testBox.style.display="none";
 moForm(currentPage,currentClub);
 }else{
-alert("❌ Rất tiếc bạn chưa đạt điều kiện");
-document.getElementById("testBox").style.display="none";
+alert("❌ Bạn chưa đạt yêu cầu!");
+testBox.style.display="none";
 }
 }
 
 // ===== FORM =====
 let currentText="";
 function moForm(p,n){
-document.getElementById("formTitle").innerText="Đăng ký "+n;
-document.getElementById("formBox").style.display="flex";
+formTitle.innerText="Đăng ký "+n;
+formBox.style.display="flex";
 }
+
 function dongForm(){formBox.style.display="none";}
+
 function moConfirm(){
-let ten=ten.value,lop=lop.value,khoa=khoa.value,sdt=sdt.value;
-if(!ten||!lop||!khoa||!sdt)return alert("Nhập đủ!");
-currentText=`Đăng ký ${currentClub}\n${ten}\n${lop}\n${khoa}\n${sdt}`;
+let ten=document.getElementById("ten").value;
+let lop=document.getElementById("lop").value;
+let khoa=document.getElementById("khoa").value;
+let sdt=document.getElementById("sdt").value;
+
+if(!ten||!lop||!khoa||!sdt) return alert("⚠️ Vui lòng nhập đầy đủ thông tin!");
+
+currentText=
+`🎓 ĐĂNG KÝ CLB ĐẠI HỌC SAO ĐỎ
+
+👤 Họ tên: ${ten}
+🏫 Lớp: ${lop}
+📘 Khóa: ${khoa}
+📞 SĐT: ${sdt}
+
+📌 CLB đăng ký: ${currentClub}
+
+Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
+
 previewText.innerText=currentText;
 confirmBox.style.display="flex";
 }
+
 function dongConfirm(){confirmBox.style.display="none";}
+
+// ===== VIP MESSENGER =====
+function convertToMessenger(page){
+if(!page) return null;
+
+if(page.includes("facebook.com")){
+try{
+let url=new URL(page);
+let path=url.pathname.replace(/\//g,"");
+
+if(path.includes("people")){
+let parts=page.split("/");
+return parts[parts.length-2];
+}
+return path;
+}catch{return null;}
+}
+return page;
+}
+
 function gui(){
-window.location.href="https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText);
+let id=convertToMessenger(currentPage);
+let url="https://m.me/"+id+"?text="+encodeURIComponent(currentText);
+window.open(url,"_blank");
 }
 
 // ===== LOADING =====
