@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -265,6 +266,9 @@ html+=`
 
 document.getElementById("slides").innerHTML=html;
 updateUI();
+
+// 👉 GẮN SWIPE TẠI ĐÂY
+themSwipe();
 }
 
 function updateScore(){
@@ -327,7 +331,37 @@ setTimeout(()=>splash.style.display="none",800);
 },40);
 });
 
+// ===== SWIPE AUTO NEXT =====
+function themSwipe(){
+const slide=document.getElementById("slides");
+if(!slide || slide.dataset.ok==="1") return;
+slide.dataset.ok="1";
+
+let startX=0,currentX=0;
+
+slide.addEventListener("touchstart",e=>{
+startX=e.touches[0].clientX;
+});
+
+slide.addEventListener("touchmove",e=>{
+currentX=e.touches[0].clientX;
+});
+
+slide.addEventListener("touchend",()=>{
+let dx=currentX-startX;
+
+if(dx<-80){
+if(current<3){current++;updateUI();}
+else{finish();}
+}
+if(dx>80){
+if(current>0){current--;updateUI();}
+}
+});
+}
+
 </script>
 
 </body>
 </html>
+```
