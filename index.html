@@ -21,8 +21,6 @@ width:100px;background:#fff;padding:8px;border-radius:50%;
 animation:spin 3s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* LOADING */
 .loading{width:200px;height:5px;background:#ffffff33;margin:15px auto;border-radius:10px;overflow:hidden;position:relative;}
 .loading span{
 position:absolute;left:-40%;width:40%;height:100%;
@@ -33,23 +31,14 @@ animation:loadingMove 1.2s linear infinite;
 #percent{margin-top:10px;font-size:16px;font-weight:bold}
 .fade-out{opacity:0;transition:.8s}
 
-/* HEADER + LOGO (CHỈ THÊM PHẦN NÀY) */
-.header{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:10px;
-margin-top:20px;
-}
-.header img{
-width:40px;height:40px;border-radius:50%;background:#fff;padding:4px;
-}
+/* HEADER */
+.header{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:20px;}
+.header img{width:40px;height:40px;border-radius:50%;background:#fff;padding:4px;}
 .header h1{
 font-size:22px;
 background:linear-gradient(90deg,#1e90ff,#3742fa);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-text-align:left;
 }
 
 /* SEARCH */
@@ -70,17 +59,14 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 opacity:0;transform:translateY(20px);
 animation:fadeIn .6s forwards
 }
-.poster:hover{transform:translateY(-6px)}
 @keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
-
 .poster img{
 width:100%;height:160px;object-fit:contain;
 background:#f1f2f6;padding:10px
 }
-.poster h3{margin:10px 0}
 
 /* BUTTON */
-.buttons{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
+.buttons{display:flex;gap:10px;justify-content:center;margin:10px}
 button{
 padding:10px;border:none;border-radius:8px;
 width:110px;font-weight:bold;cursor:pointer
@@ -88,14 +74,41 @@ width:110px;font-weight:bold;cursor:pointer
 .btn-info{background:#2f3542;color:#fff}
 .btn-register{background:#1e90ff;color:#fff}
 
-/* FORM */
-#formBox,#confirmBox{
+/* MODAL */
+#formBox,#confirmBox,#testBox{
 display:none;
 position:fixed;inset:0;
 background:#0008;
 justify-content:center;align-items:center;
 z-index:9999
 }
+
+/* TEST */
+.test{
+background:#fff;border-radius:18px;
+width:95%;max-width:420px;height:90vh;
+display:flex;flex-direction:column;overflow:hidden;
+}
+.test-header{padding:15px;border-bottom:1px solid #eee;text-align:center;}
+.test-header h3{color:#1e90ff}
+.progress{height:6px;background:#eee;border-radius:10px;margin:10px 0;}
+.progress span{display:block;height:100%;background:#1e90ff;width:0%;}
+.score{text-align:right;font-size:13px}
+
+.slide-wrapper{flex:1;overflow:hidden}
+.slide-container{display:flex;height:100%;transition:.4s}
+.slide{min-width:100%;padding:15px;overflow-y:auto}
+.slide p{font-weight:bold;margin-bottom:10px;line-height:1.5}
+
+label{
+display:block;padding:10px;border:1px solid #ddd;
+border-radius:10px;margin-bottom:8px;cursor:pointer;
+}
+label:hover{background:#eef5ff}
+
+.nav{display:flex;justify-content:space-between;padding:10px}
+
+/* FORM */
 .form,.confirm{
 background:#fff;padding:20px;border-radius:12px;width:320px
 }
@@ -103,14 +116,6 @@ background:#fff;padding:20px;border-radius:12px;width:320px
 width:100%;margin:5px 0;padding:8px;border-radius:6px;border:1px solid #ccc
 }
 .row{display:flex;gap:10px;margin-top:10px}
-
-/* MOBILE */
-@media(max-width:600px){
-.header{flex-direction:column}
-.header h1{text-align:center}
-button{width:100%}
-.buttons{flex-direction:column}
-}
 </style>
 </head>
 
@@ -126,7 +131,7 @@ button{width:100%}
 </div>
 </div>
 
-<!-- HEADER + LOGO -->
+<!-- HEADER -->
 <div class="header">
 <img src="https://raw.githubusercontent.com/nguyenvankhanh6112004-hub/clb-website/main/icon.jpg">
 <h1>HỆ THỐNG CLB<br>TRƯỜNG ĐẠI HỌC SAO ĐỎ</h1>
@@ -138,9 +143,28 @@ button{width:100%}
 
 <div class="container" id="container"></div>
 
+<!-- TEST -->
+<div id="testBox">
+<div class="test">
+<div class="test-header">
+<h3>BÀI TEST ĐÁNH GIÁ</h3>
+<div class="progress"><span id="bar"></span></div>
+<div class="score">Điểm: <span id="score">0</span></div>
+</div>
+
+<div class="slide-wrapper">
+<div class="slide-container" id="slides"></div>
+</div>
+
+<div class="nav">
+<button onclick="prev()">←</button>
+<button onclick="next()">→</button>
+</div>
+</div>
+</div>
+
 <!-- FORM -->
-<div id="formBox">
-<div class="form">
+<div id="formBox"><div class="form">
 <h3 id="formTitle"></h3>
 <input id="ten" placeholder="Họ tên">
 <input id="lop" placeholder="Lớp">
@@ -150,122 +174,159 @@ button{width:100%}
 <button onclick="moConfirm()" class="btn-register">Gửi</button>
 <button onclick="dongForm()">Hủy</button>
 </div>
-</div>
-</div>
+</div></div>
 
 <!-- CONFIRM -->
-<div id="confirmBox">
-<div class="confirm">
+<div id="confirmBox"><div class="confirm">
 <h3>Xác nhận gửi</h3>
 <pre id="previewText"></pre>
 <div class="row">
 <button onclick="gui()" class="btn-register">Xác nhận</button>
 <button onclick="dongConfirm()">Hủy</button>
 </div>
-</div>
-</div>
+</div></div>
 
 <script>
+
+// ===== CLB =====
 const clubs=[
 {name:"CLB Âm Nhạc",img:"amnhac.jpg",fb:"amnhacsaodo"},
-{name:"CLB Kinh Doanh",img:"kd.jpg",fb:"kinhdoanh"},
-{name:"CLB Công Nghệ",img:"cn.jpg",fb:"congnghe"},
 {name:"CLB Tay Chung Tay",img:"tct.jpg",fb:"taychungtay.vn"},
 {name:"CLB SMC",img:"smc.jpg",fb:"smcsaodo"},
 {name:"CLB Thanh Niên Xung Kích",img:"tnxk.jpg",fb:"TNXKDHSD"},
-{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",fb:""}
+{name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",fb:"https://www.facebook.com/people/CLB-v%C3%B5-thu%E1%BA%ADt-Linh-Quy%E1%BB%81n-%C4%90%E1%BA%A1o-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Sao-%C4%90%E1%BB%8F/100057460838671/"}
 ];
 
-const container=document.getElementById("container");
+// ===== FB =====
+function moFB(page){
+if(!page){alert("CLB chưa có Facebook!");return;}
+if(page.startsWith("http")){
+window.open(page,"_blank");
+}else{
+window.open("https://facebook.com/"+page,"_blank");
+}
+}
 
+// ===== HIỂN THỊ =====
+const container=document.getElementById("container");
 function hienThi(ds){
 container.innerHTML="";
-ds.forEach(club=>{
+ds.forEach(c=>{
 container.innerHTML+=`
 <div class="poster">
-<img src="${club.img}?v=${Date.now()}">
-<h3>${club.name}</h3>
+<img src="${c.img}?v=${Date.now()}">
+<h3>${c.name}</h3>
 <div class="buttons">
-<button class="btn-info" onclick="moFB('${club.fb}')">Giới thiệu</button>
-<button class="btn-register" onclick="moForm('${club.fb}','${club.name}')">Đăng ký</button>
+<button class="btn-info" onclick="moFB('${c.fb}')">Giới thiệu</button>
+<button class="btn-register" onclick="moTest('${c.name}','${c.fb}')">Đăng ký</button>
 </div>
 </div>`;
 });
 }
 hienThi(clubs);
 
-function timCLB(key){
-let k=key.toLowerCase();
-hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k)));
+function timCLB(k){
+hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k.toLowerCase())));
 }
 
-function moFB(page){
-if(!page){alert("CLB chưa có Facebook!");return;}
-window.location.href="https://facebook.com/"+page;
-}
+// ===== CÂU HỎI =====
+const questionSet={
+"default":[
+{q:"Bạn có thể tham gia CLB?",a:["Rất tích cực","Bình thường","Ít","Không"]},
+{q:"Bạn có kỹ năng?",a:["Tốt","Cơ bản","Đang học","Chưa"]},
+{q:"Bạn teamwork?",a:["Rất tốt","Ổn","Kém","Không"]},
+{q:"Mục tiêu?",a:["Phát triển","Trải nghiệm","Kết bạn","Không rõ"]}
+]
+};
 
-let currentPage="",currentClub="",currentText="";
+// ===== TEST =====
+let current=0,score=0,currentClub="",currentPage="";
 
-function moForm(page,name){
-if(!page){alert("CLB chưa có Facebook!");return;}
-currentPage=page;
+function moTest(name,page){
 currentClub=name;
-document.getElementById("formTitle").innerText="Đăng ký "+name;
+currentPage=page;
+
+let qs=questionSet["default"];
+
+document.getElementById("testBox").style.display="flex";
+current=0;score=0;
+
+let html="";
+qs.forEach((item,i)=>{
+html+=`
+<div class="slide">
+<p>${i+1}. ${item.q}</p>
+<label><input type="radio" name="q${i}" value="5" onchange="updateScore()"> ${item.a[0]}</label>
+<label><input type="radio" name="q${i}" value="3" onchange="updateScore()"> ${item.a[1]}</label>
+<label><input type="radio" name="q${i}" value="1" onchange="updateScore()"> ${item.a[2]}</label>
+<label><input type="radio" name="q${i}" value="0" onchange="updateScore()"> ${item.a[3]}</label>
+</div>`;
+});
+
+document.getElementById("slides").innerHTML=html;
+updateUI();
+}
+
+function updateScore(){
+score=0;
+document.querySelectorAll('#slides input:checked').forEach(e=>{
+score+=+e.value;
+});
+document.getElementById("score").innerText=score;
+}
+
+function updateUI(){
+document.getElementById("slides").style.transform=`translateX(-${current*100}%)`;
+document.getElementById("bar").style.width=((current+1)/4*100)+"%";
+}
+
+function next(){current<3?(current++,updateUI()):finish();}
+function prev(){if(current>0){current--;updateUI();}}
+
+function finish(){
+if(score>=10){
+alert("🎉 Chúc mừng bạn đã đạt điều kiện để đăng ký");
+document.getElementById("testBox").style.display="none";
+moForm(currentPage,currentClub);
+}else{
+alert("❌ Rất tiếc bạn chưa đạt điều kiện");
+document.getElementById("testBox").style.display="none";
+}
+}
+
+// ===== FORM =====
+let currentText="";
+function moForm(p,n){
+document.getElementById("formTitle").innerText="Đăng ký "+n;
 document.getElementById("formBox").style.display="flex";
 }
-
-function dongForm(){
-document.getElementById("formBox").style.display="none";
-}
-
+function dongForm(){formBox.style.display="none";}
 function moConfirm(){
-let ten=document.getElementById("ten").value;
-let lop=document.getElementById("lop").value;
-let khoa=document.getElementById("khoa").value;
-let sdt=document.getElementById("sdt").value;
-
-if(!ten||!lop||!khoa||!sdt){alert("Vui lòng nhập đầy đủ!");return;}
-
-currentText=
-"Tôi muốn đăng ký "+currentClub+"\n\n"+
-"Họ tên: "+ten+"\n"+
-"Lớp: "+lop+"\n"+
-"Khóa: "+khoa+"\n"+
-"SĐT: "+sdt;
-
-document.activeElement.blur();
-
-setTimeout(()=>{
-document.getElementById("previewText").innerText=currentText;
-document.getElementById("confirmBox").style.display="flex";
-},200);
+let ten=ten.value,lop=lop.value,khoa=khoa.value,sdt=sdt.value;
+if(!ten||!lop||!khoa||!sdt)return alert("Nhập đủ!");
+currentText=`Đăng ký ${currentClub}\n${ten}\n${lop}\n${khoa}\n${sdt}`;
+previewText.innerText=currentText;
+confirmBox.style.display="flex";
 }
-
-function dongConfirm(){
-document.getElementById("confirmBox").style.display="none";
-}
-
+function dongConfirm(){confirmBox.style.display="none";}
 function gui(){
-let link="https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText);
-window.location.href=link;
+window.location.href="https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText);
 }
 
-/* LOADING */
+// ===== LOADING =====
 document.addEventListener("DOMContentLoaded", ()=>{
 let p=0;
-let percentText=document.getElementById("percent");
-
 let load=setInterval(()=>{
 p+=2;
-if(percentText) percentText.innerText=p+"%";
-
+percent.innerText=p+"%";
 if(p>=100){
 clearInterval(load);
-document.getElementById("splash").classList.add("fade-out");
-setTimeout(()=>{document.getElementById("splash").style.display="none"},800);
+splash.classList.add("fade-out");
+setTimeout(()=>splash.style.display="none",800);
 }
 },40);
 });
+
 </script>
 
 </body>
