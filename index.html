@@ -83,30 +83,29 @@ justify-content:center;align-items:center;
 z-index:9999
 }
 
-/* TEST */
+/* TEST UI */
 .test{
 background:#fff;border-radius:18px;
-width:95%;max-width:420px;height:90vh;
-display:flex;flex-direction:column;overflow:hidden;
+width:95%;max-width:420px;
+padding:20px;
+max-height:90vh;
+overflow:auto;
+text-align:left;
 }
-.test-header{padding:15px;border-bottom:1px solid #eee;text-align:center;}
-.test-header h3{color:#1e90ff}
-.progress{height:6px;background:#eee;border-radius:10px;margin:10px 0;}
-.progress span{display:block;height:100%;background:#1e90ff;width:0%;}
-.score{text-align:right;font-size:13px}
-
-.slide-wrapper{flex:1;overflow:hidden}
-.slide-container{display:flex;height:100%;transition:.4s}
-.slide{min-width:100%;padding:15px;overflow-y:auto}
-.slide p{font-weight:bold;margin-bottom:10px;line-height:1.5}
-
-label{
-display:block;padding:10px;border:1px solid #ddd;
-border-radius:10px;margin-bottom:8px;cursor:pointer;
+.test h3{text-align:center;margin-bottom:10px;color:#1e90ff}
+.q{margin-bottom:15px}
+.q p{font-weight:bold;margin-bottom:8px}
+.q label{
+display:block;
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+margin-bottom:6px;
+cursor:pointer;
+transition:.2s;
 }
-label:hover{background:#eef5ff}
-
-.nav{display:flex;justify-content:space-between;padding:10px}
+.q label:hover{background:#eef5ff}
+.q input{margin-right:6px}
 
 /* FORM */
 .form,.confirm{
@@ -117,15 +116,15 @@ width:100%;margin:6px 0;padding:9px;border-radius:6px;border:1px solid #ccc
 }
 .row{display:flex;gap:10px;margin-top:10px}
 
-/* CONFIRM VIP */
-.confirm h3{color:#1e90ff;margin-bottom:10px}
+/* CONFIRM */
 .preview{
-background:#f1f2f6;
-padding:10px;
-border-radius:10px;
+background:linear-gradient(135deg,#eef5ff,#dfe4ff);
+padding:15px;
+border-radius:12px;
 text-align:left;
 font-size:14px;
 white-space:pre-line;
+line-height:1.6;
 }
 </style>
 </head>
@@ -157,19 +156,12 @@ white-space:pre-line;
 <!-- TEST -->
 <div id="testBox">
 <div class="test">
-<div class="test-header">
 <h3>BÀI TEST ĐÁNH GIÁ</h3>
-<div class="progress"><span id="bar"></span></div>
-<div class="score">Điểm: <span id="score">0</span></div>
-</div>
+<div id="questions"></div>
 
-<div class="slide-wrapper">
-<div class="slide-container" id="slides"></div>
-</div>
-
-<div class="nav">
-<button onclick="prev()">←</button>
-<button onclick="next()">→</button>
+<div class="row">
+<button onclick="nopBai()" class="btn-register">Nộp bài</button>
+<button onclick="dongTest()">Thoát</button>
 </div>
 </div>
 </div>
@@ -180,7 +172,7 @@ white-space:pre-line;
 <input id="ten" placeholder="Họ và tên">
 <input id="lop" placeholder="Lớp">
 <input id="khoa" placeholder="Khóa">
-<input id="sdt" placeholder="Số điện thoại">
+<input id="sdt" placeholder="SĐT">
 <div class="row">
 <button onclick="moConfirm()" class="btn-register">Gửi đăng ký</button>
 <button onclick="dongForm()">Hủy</button>
@@ -189,11 +181,11 @@ white-space:pre-line;
 
 <!-- CONFIRM -->
 <div id="confirmBox"><div class="confirm">
-<h3>📩 Xác nhận đăng ký</h3>
+<h3>Nội dung gửi</h3>
 <div class="preview" id="previewText"></div>
 <div class="row">
-<button onclick="gui()" class="btn-register">Xác nhận & gửi</button>
-<button onclick="dongConfirm()">Hủy</button>
+<button onclick="gui()" class="btn-register">Gửi Mess</button>
+<button onclick="dongConfirm()">Đóng</button>
 </div>
 </div></div>
 
@@ -206,10 +198,10 @@ const clubs=[
 {name:"CLB SMC",img:"smc.jpg",fb:"smcsaodo"},
 {name:"CLB Thanh Niên Xung Kích",img:"tnxk.jpg",fb:"TNXKDHSD"},
 {name:"CLB Linh Quyền Đạo",img:"linhquyendao.jpg",
- fb:"https://www.facebook.com/people/CLB-v%C3%B5-thu%E1%BA%ADt-Linh-Quy%E1%BB%81n-%C4%90%E1%BA%A1o-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Sao-%C4%90%E1%BB%8F/100057460838671/"}
+ fb:"https://www.facebook.com/people/CLB-v%C3%B5-thu%E1%BA%ADt-Linh-Quy%E1%BB%81n-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Sao-%C4%90%E1%BB%8F/100057460838671/"},
+{name:"CLB Tuổi Trẻ Khởi Nghiệp",img:"ttkn.jpg",fb:"Clbtuoitrekhoinghiepsdu99"}
 ];
 
-// ===== HIỂN THỊ =====
 const container=document.getElementById("container");
 function hienThi(ds){
 container.innerHTML="";
@@ -231,91 +223,87 @@ function timCLB(k){
 hienThi(clubs.filter(c=>c.name.toLowerCase().includes(k.toLowerCase())));
 }
 
-// ===== TEST =====
-let current=0,score=0,currentClub="",currentPage="";
+// ===== QUESTIONS =====
+const questions=[
+{q:"Khi tham gia vào một tổ chức/đội nhóm, điều bạn quan tâm nhất là gì?",
+a:["Có môi trường để học hỏi","Tìm bạn bè","Đóng góp","Dẫn dắt"]},
+{q:"Bạn dành bao nhiêu thời gian?",
+a:["1-3h","4-7h","8h+","Linh hoạt"]},
+{q:"Nếu khác ý kiến?",
+a:["Im lặng","Trình bày","Thuyết phục","Chờ xem"]},
+{q:"Nhiệm vụ khó?",
+a:["Lo lắng","Tự học","Hỏi kinh nghiệm","Làm luôn"]},
+{q:"Khi mệt?",
+a:["Nghỉ","Cố làm","Nhờ team","Tiếp tục"]}
+];
+
+let currentClub="",currentPage="";
 
 function moTest(name,page){
 currentClub=name;
 currentPage=page;
-document.getElementById("testBox").style.display="flex";
-current=0;score=0;
-
-let qs=[
-"Bạn có thể tham gia CLB?",
-"Bạn có kỹ năng?",
-"Bạn teamwork?",
-"Mục tiêu?"
-];
+testBox.style.display="flex";
 
 let html="";
-qs.forEach((q,i)=>{
+questions.forEach((item,i)=>{
 html+=`
-<div class="slide">
-<p>${i+1}. ${q}</p>
-<label><input type="radio" name="q${i}" value="5" onchange="updateScore()"> Rất tốt</label>
-<label><input type="radio" name="q${i}" value="3" onchange="updateScore()"> Bình thường</label>
-<label><input type="radio" name="q${i}" value="1" onchange="updateScore()"> Ít</label>
-<label><input type="radio" name="q${i}" value="0" onchange="updateScore()"> Không</label>
+<div class="q">
+<p>${i+1}. ${item.q}</p>
+${item.a.map((ans,j)=>`
+<label><input type="radio" name="q${i}" value="${ans}"> ${ans}</label>
+`).join("")}
 </div>`;
 });
 
-slides.innerHTML=html;
-updateUI();
+questionsDiv.innerHTML=html;
 }
 
-function updateScore(){
-score=0;
-document.querySelectorAll('#slides input:checked').forEach(e=>score+=+e.value);
-document.getElementById("score").innerText=score;
+function dongTest(){testBox.style.display="none";}
+
+const questionsDiv=document.getElementById("questions");
+
+// ===== SUBMIT =====
+let answersText="";
+
+function nopBai(){
+answersText="";
+for(let i=0;i<questions.length;i++){
+let checked=document.querySelector(`input[name="q${i}"]:checked`);
+if(!checked) return alert("⚠️ Trả lời hết câu hỏi!");
+answersText+=`Câu ${i+1}: ${questions[i].q}
+👉 ${checked.value}
+
+`;
 }
-
-function updateUI(){
-slides.style.transform=`translateX(-${current*100}%)`;
-bar.style.width=((current+1)/4*100)+"%";
-}
-
-function next(){current<3?(current++,updateUI()):finish();}
-function prev(){if(current>0){current--;updateUI();}}
-
-function finish(){
-if(score>=10){
-alert("🎉 Bạn đã đủ điều kiện đăng ký!");
 testBox.style.display="none";
-moForm(currentPage,currentClub);
-}else{
-alert("❌ Bạn chưa đạt yêu cầu!");
-testBox.style.display="none";
-}
+moForm();
 }
 
 // ===== FORM =====
 let currentText="";
-function moForm(p,n){
-formTitle.innerText="Đăng ký "+n;
+function moForm(){
+formTitle.innerText="Đăng ký "+currentClub;
 formBox.style.display="flex";
 }
 
 function dongForm(){formBox.style.display="none";}
 
 function moConfirm(){
-let ten=document.getElementById("ten").value;
-let lop=document.getElementById("lop").value;
-let khoa=document.getElementById("khoa").value;
-let sdt=document.getElementById("sdt").value;
-
-if(!ten||!lop||!khoa||!sdt) return alert("⚠️ Vui lòng nhập đầy đủ thông tin!");
+let ten=tenEl.value,lop=lopEl.value,khoa=khoaEl.value,sdt=sdtEl.value;
+if(!ten||!lop||!khoa||!sdt) return alert("⚠️ Nhập đủ thông tin!");
 
 currentText=
-`🎓 ĐĂNG KÝ CLB ĐẠI HỌC SAO ĐỎ
+`🎓 ĐĂNG KÝ CLB
 
-👤 Họ tên: ${ten}
-🏫 Lớp: ${lop}
-📘 Khóa: ${khoa}
-📞 SĐT: ${sdt}
+👤 ${ten}
+🏫 ${lop}
+📘 ${khoa}
+📞 ${sdt}
 
-📌 CLB đăng ký: ${currentClub}
+📋 KẾT QUẢ BÀI TEST:
+${answersText}
 
-Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
+🙏 Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
 
 previewText.innerText=currentText;
 confirmBox.style.display="flex";
@@ -323,32 +311,17 @@ confirmBox.style.display="flex";
 
 function dongConfirm(){confirmBox.style.display="none";}
 
-// ===== VIP MESSENGER =====
-function convertToMessenger(page){
-if(!page) return null;
-
-if(page.includes("facebook.com")){
-try{
-let url=new URL(page);
-let path=url.pathname.replace(/\//g,"");
-
-if(path.includes("people")){
-let parts=page.split("/");
-return parts[parts.length-2];
-}
-return path;
-}catch{return null;}
-}
-return page;
-}
-
 function gui(){
-let id=convertToMessenger(currentPage);
-let url="https://m.me/"+id+"?text="+encodeURIComponent(currentText);
-window.open(url,"_blank");
+window.open("https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText));
 }
 
-// ===== LOADING =====
+// INPUT
+const tenEl=document.getElementById("ten");
+const lopEl=document.getElementById("lop");
+const khoaEl=document.getElementById("khoa");
+const sdtEl=document.getElementById("sdt");
+
+// LOADING
 document.addEventListener("DOMContentLoaded", ()=>{
 let p=0;
 let load=setInterval(()=>{
@@ -363,6 +336,5 @@ setTimeout(()=>splash.style.display="none",800);
 });
 
 </script>
-
 </body>
 </html>
