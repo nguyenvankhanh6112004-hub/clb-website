@@ -109,7 +109,12 @@ transition:.2s;
 
 /* FORM */
 .form,.confirm{
-background:#fff;padding:20px;border-radius:15px;width:340px
+background:#fff;
+padding:20px;
+border-radius:15px;
+width:340px;
+max-height:90vh;      /* Giới hạn chiều cao */
+overflow:auto;        /* Cho scroll nếu dài */
 }
 .form input{
 width:100%;margin:6px 0;padding:9px;border-radius:6px;border:1px solid #ccc
@@ -125,6 +130,9 @@ text-align:left;
 font-size:14px;
 white-space:pre-line;
 line-height:1.6;
+
+max-height:300px;   /* Giới hạn chiều cao */
+overflow:auto;      /* Cuộn nội dung */
 }
 </style>
 </head>
@@ -174,7 +182,7 @@ line-height:1.6;
 <input id="khoa" placeholder="Khóa">
 <input id="sdt" placeholder="SĐT">
 <div class="row">
-<button onclick="moConfirm()" class="btn-register">Gửi đăng ký</button>
+<button onclick="moConfirm()" class="btn-register">🚀 Gửi đơn đăng ký</button>
 <button onclick="dongForm()">Hủy</button>
 </div>
 </div></div>
@@ -184,7 +192,7 @@ line-height:1.6;
 <h3>Nội dung gửi</h3>
 <div class="preview" id="previewText"></div>
 <div class="row">
-<button onclick="gui()" class="btn-register">Gửi Mess</button>
+<button onclick="gui()" class="btn-register">Gửi </button>
 <button onclick="dongConfirm()">Đóng</button>
 </div>
 </div></div>
@@ -271,7 +279,7 @@ for(let i=0;i<questions.length;i++){
 let checked=document.querySelector(`input[name="q${i}"]:checked`);
 if(!checked) return alert("⚠️ Trả lời hết câu hỏi!");
 answersText+=`Câu ${i+1}: ${questions[i].q}
-👉 ${checked.value}
+📌 ${checked.value}
 
 `;
 }
@@ -293,17 +301,17 @@ let ten=tenEl.value,lop=lopEl.value,khoa=khoaEl.value,sdt=sdtEl.value;
 if(!ten||!lop||!khoa||!sdt) return alert("⚠️ Nhập đủ thông tin!");
 
 currentText=
-`🎓 ĐĂNG KÝ CLB
+` ĐĂNG KÝ CLB
 
-👤 ${ten}
-🏫 ${lop}
-📘 ${khoa}
-📞 ${sdt}
+ Họ tên: ${ten}
+ Lớp: ${lop}
+ Khoa: ${khoa}
+ SĐT: ${sdt}
 
-📋 KẾT QUẢ BÀI TEST:
+ KẾT QUẢ BÀI TEST:
 ${answersText}
 
-🙏 Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
+ Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
 
 previewText.innerText=currentText;
 confirmBox.style.display="flex";
@@ -312,7 +320,9 @@ confirmBox.style.display="flex";
 function dongConfirm(){confirmBox.style.display="none";}
 
 function gui(){
-window.open("https://m.me/"+currentPage+"?text="+encodeURIComponent(currentText));
+    let text = currentText;
+    let url = "https://www.facebook.com/messages/t/" + currentPage + "?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
 }
 
 // INPUT
