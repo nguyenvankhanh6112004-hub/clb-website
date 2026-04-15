@@ -320,8 +320,8 @@ confirmBox.style.display="flex";
 function dongConfirm(){confirmBox.style.display="none";}
 
 function gui(){
-    let text = currentText;
-    let url = "https://www.facebook.com/messages/t/" + currentPage + "?text=" + encodeURIComponent(text);
+    let text = encodeURIComponent(currentText);
+    let url = "https://m.me/" + currentPage + "?text=" + text;
     window.open(url, "_blank");
 }
 
