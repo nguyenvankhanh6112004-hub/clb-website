@@ -245,6 +245,34 @@ a:["Lo lắng","Tự học","Hỏi kinh nghiệm","Bỏ luôn"]},
 a:["Nghỉ","Cố làm","Nhờ team hỗ trợ","Tiếp tục"]}
 ];
 
+const questionBank = {
+
+"CLB Âm Nhạc": [
+{q:"Bạn có kỹ năng gì?", a:["Hát","Chơi nhạc cụ","Sáng tác","Chưa có"]},
+{q:"Bạn từng biểu diễn chưa?", a:["Rồi","Chưa","Ít","Nhiều"]},
+{q:"Bạn thích thể loại nhạc nào?", a:["Pop","Rap","Ballad","Khác"]},
+{q:"Bạn có thể tham gia luyện tập?", a:["Thường xuyên","Cuối tuần","Linh hoạt","Ít"]},
+{q:"Mục tiêu khi vào CLB?", a:["Học hỏi","Biểu diễn","Giải trí","Giao lưu"]}
+],
+
+"CLB SMC": [
+{q:"Bạn có kinh nghiệm truyền thông?", a:["Có","Không","Ít","Tự học"]},
+{q:"Bạn mạnh về kỹ năng nào?", a:["Content","Design","Video","Tất cả"]},
+{q:"Bạn làm việc nhóm?", a:["Tốt","Ổn","Kém","Rất tốt"]},
+{q:"Bạn chịu deadline?", a:["Có","Không","Tùy","Rất tốt"]},
+{q:"Bạn muốn phát triển gì?", a:["Kỹ năng","Kinh nghiệm","Portfolio","Quan hệ"]}
+],
+
+"CLB Tay Chung Tay": [
+{q:"Bạn thích hoạt động nào?", a:["Tình nguyện","Sự kiện","Giáo dục","Tất cả"]},
+{q:"Bạn có sẵn sàng đi xa?", a:["Có","Không","Tùy","Hiếm"]},
+{q:"Bạn làm việc nhóm?", a:["Tốt","Ổn","Kém","Rất tốt"]},
+{q:"Bạn chịu được áp lực?", a:["Có","Không","Tùy","Rất tốt"]},
+{q:"Bạn tham gia vì?", a:["Cống hiến","Trải nghiệm","Bạn bè","Phát triển"]}
+]
+
+};
+
 let currentClub="",currentPage="";
 
 function moTest(name,page){
@@ -253,7 +281,9 @@ currentPage=page;
 testBox.style.display="flex";
 
 let html="";
-questions.forEach((item,i)=>{
+let qs = questionBank[name] || questions;
+
+qs.forEach((item,i)=>{
 html+=`
 <div class="q">
 <p>${i+1}. ${item.q}</p>
@@ -275,10 +305,12 @@ let answersText="";
 
 function nopBai(){
 answersText="";
-for(let i=0;i<questions.length;i++){
+let qs = questionBank[currentClub] || questions;
+
+for(let i=0;i<qs.length;i++){
 let checked=document.querySelector(`input[name="q${i}"]:checked`);
 if(!checked) return alert("⚠️ Trả lời hết câu hỏi!");
-answersText+=`Câu ${i+1}: ${questions[i].q}
+answersText+=`Câu ${i+1}: ${qs[i].q}
 📌 ${checked.value}
 
 `;
@@ -300,18 +332,18 @@ function moConfirm(){
 let ten=tenEl.value,lop=lopEl.value,khoa=khoaEl.value,sdt=sdtEl.value;
 if(!ten||!lop||!khoa||!sdt) return alert("⚠️ Nhập đủ thông tin!");
 
-currentText=
-` ĐĂNG KÝ CLB
+currentText =
+`ĐĂNG KÝ CLB
 
- Họ tên: ${ten}
- Lớp: ${lop}
- Khoa: ${khoa}
- SĐT: ${sdt}
+Họ tên: ${ten}
+Lớp: ${lop}
+Khoa: ${khoa}
+SĐT: ${sdt}
 
- KẾT QUẢ BÀI TEST:
-${answersText}
+KẾT QUẢ TEST
+${answersText.trim()}
 
- Em xin đăng ký tham gia CLB. Mong được xét duyệt ạ!`;
+Em xin đăng ký tham gia CLB, mong được xét duyệt ạ!`;
 
 previewText.innerText=currentText;
 confirmBox.style.display="flex";
